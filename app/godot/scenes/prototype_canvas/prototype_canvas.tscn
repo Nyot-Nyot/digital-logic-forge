@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://c6v2n7s0v0m1"]
+
+[ext_resource type="Script" path="res://scenes/prototype_canvas/prototype_canvas.gd" id="1_pc"]
+[ext_resource type="Script" path="res://scenes/prototype_canvas/canvas_renderer.gd" id="2_cr"]
+
+[node name="PrototypeCanvas" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_pc")
+
+[node name="CanvasRenderer" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("2_cr")
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="MarginContainer" type="MarginContainer" parent="HUD"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 60.0
+grow_horizontal = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/MarginContainer"]
+layout_mode = 2
+
+[node name="LblInfo" type="Label" parent="HUD/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Komponen: 0 | FPS: 0"
+
+[node name="LblStatus" type="Label" parent="HUD/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.8, 0.3, 1)
+text = "Status"

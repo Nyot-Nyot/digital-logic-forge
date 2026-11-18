@@ -1,0 +1,17 @@
+[workspace]
+resolver = "3"
+members = [
+    "crates/dlf-core",
+    "crates/dlf-godot",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+authors = ["Dzaki Sultan Rabbani <99807420+Nyot-Nyot@users.noreply.github.com>"]
+license = "MIT OR Apache-2.0"
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 1

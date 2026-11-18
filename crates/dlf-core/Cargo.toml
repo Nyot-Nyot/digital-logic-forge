@@ -1,0 +1,15 @@
+[package]
+name = "dlf-core"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+description = "Core compiled execution engine, intermediate representation, and simulation runtime for Digital Logic Forge"
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+thiserror = "2.0"
+
+[dev-dependencies]
+pretty_assertions = "1.4"

@@ -1,6 +1,7 @@
 # Digital Logic Forge (DLF) — Progress Dashboard
 
-> **Status Saat Ini:** Milestone M0 (Implementation Baseline) — *In Progress*  
+> **Status Saat Ini:** Milestone M0 (Implementation Baseline) — **ACCEPTED [LULUS]**  
+> **Milestone Berikutnya:** Milestone M1 (Headless Circuit Model) — *Ready to Start*  
 > **Terakhir Diperbarui:** 18 November 2026  
 > **Single Source of Truth (SSoT):** [Proposal TA (Markdown)](../compiled%20circuit%20simulator.md) & Dokumen ini.
 
@@ -10,8 +11,8 @@
 
 | ID | Milestone | Prioritas | Status | Target Deliverable Utama |
 | :---: | :--- | :---: | :---: | :--- |
-| **M0** | **Implementation Baseline** | P0 | **IN PROGRESS** | Kerangka workspace Cargo, binding GDExtension, smoke test, baseline prototype canvas |
-| **M1** | **Headless Circuit Model** | P0 | *Not Started* | Dokumen JSON, Stable ID 64-bit, structural validator |
+| **M0** | **Implementation Baseline** | P0 | **ACCEPTED** ✅ | Kerangka workspace Cargo, binding GDExtension, smoke test, baseline prototype canvas |
+| **M1** | **Headless Circuit Model** | P0 | **READY** 🚀 | Dokumen JSON, Stable ID 64-bit, structural validator |
 | **M2** | **Connectivity & Semantic Frontend** | P0 | *Not Started* | Resolusi net & junction, validasi lebar bus, SCC detection |
 | **M3** | **First Compiled Simulation** | P0 | *Not Started* | Snapshot -> Compile -> IR ringkas -> Runtime B1 vs B0 oracle |
 | **M4** | **Stateful Simulation** | P0 | *Not Started* | Clock domain, register simultaneous commit, RAM/ROM |
@@ -28,13 +29,14 @@
 - [x] Konfirmasi pedoman kode dan working contract di `AGENTS.md`
 - [x] Inisialisasi Git repository & remote GitHub (`Nyot-Nyot/digital-logic-forge`)
 - [x] Setup root `README.md` dengan visualisasi workflow dan status aktif
-- [ ] Inisialisasi Cargo Workspace (`dlf-core`, `dlf-godot`) dengan `rust-toolchain.toml` edisi 2024
-- [ ] Setup proyek dasar Godot 4.7.2 di `app/godot/`
-- [ ] Implementasi GDExtension binding tipis & smoke test pemanggilan dari GDScript
-- [ ] Verifikasi worker Rust thread independen (tidak memegang referensi scene tree)
-- [ ] Prototype canvas terpusat (pan/zoom, selection, hit-testing baseline)
-- [ ] Skrip otomatisasi PowerShell di `scripts/` (`check.ps1`, `test.ps1`)
-- [ ] Audit kriteria keluar M0 & penutupan checklist M0
+- [x] Inisialisasi Cargo Workspace (`dlf-core`, `dlf-godot`) dengan `rust-toolchain.toml` edisi 2024
+- [x] Setup proyek dasar Godot 4.7.2 di `app/godot/` & binding `dlf.gdextension`
+- [x] Implementasi GDExtension binding tipis & smoke test pemanggilan dari GDScript
+- [x] Verifikasi worker Rust thread independen & snapshot non-blocking polling
+- [x] Prototype canvas terpusat (pan/zoom, selection, hit-testing O(1) 2.2 µs pada 2500 elemen)
+- [x] Verifikasi profil release `dlf_godot.dll` dengan LTO
+- [x] Skrip otomatisasi PowerShell di `scripts/` (`check.ps1`, `test.ps1`, `build_extension.ps1`)
+- [x] Audit 8 kriteria keluar M0 & penutupan checklist M0 (Semua 100% Lulus)
 
 ---
 

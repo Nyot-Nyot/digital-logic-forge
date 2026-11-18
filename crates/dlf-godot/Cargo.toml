@@ -1,0 +1,14 @@
+[package]
+name = "dlf-godot"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+description = "GDExtension bridge between Godot 4.7.2 presentation layer and DLF Rust Core"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+dlf-core = { path = "../dlf-core" }
+godot = { version = "0.5.5", features = ["api-4-7"] }
