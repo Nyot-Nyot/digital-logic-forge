@@ -19,7 +19,8 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	if lbl_info != null:
 		var fps := Engine.get_frames_per_second()
-		lbl_info.text = "Komponen: %d | FPS: %d | Zoom: %.2fx | Pan: (%d, %d)" % [
+		lbl_info.text = "Komponen Terlihat: %d / %d | FPS: %d | Zoom: %.2fx | Pan: (%d, %d)" % [
+			renderer.drawn_count,
 			renderer._items.size(),
 			fps,
 			renderer.zoom_level,
