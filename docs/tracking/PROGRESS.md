@@ -1,6 +1,6 @@
 # Digital Logic Forge (DLF) — Sprint Backlog & Progress Tracker
 
-> **Milestone Aktif:** **Milestone M1 (Headless Circuit Model)**  
+> **Milestone Aktif:** **Milestone M2 (Connectivity & Semantic Frontend)**  
 > **Status Sprint:** **PRE-SPRINT COMPLETED → READY FOR DAILY LOOP**  
 > **Terakhir Diperbarui:** 19 November 2026
 
@@ -8,172 +8,31 @@
 
 ## 1. Task yang Sedang Berjalan (IN PROGRESS)
 
-> *Seluruh task Milestone M1 telah selesai (14/14 - 100%). Memasuki fase POST-SPRINT M1.*
+> *Pre-Sprint M2 selesai didekomposisi. Siap mengambil Task M2.01 (SPIKE).*
 
 ---
 
-## 2. Backlog Task Milestone M1 (Headless Circuit Model)
+## 2. Backlog Task Milestone M2 (Connectivity & Semantic Frontend)
 
 | ID | Tipe | Deskripsi Task & Definition of Done (DoD) | Dependensi | Status |
 | :---: | :---: | :--- | :---: | :---: |
-| **M1.01** | **SPIKE** | **Spesifikasi Skema JSON Dokumen & Versi Format**<br/>• *DoD:* Format JSON untuk entitas dokumen didefinisikan secara eksplisit, contoh fixture JSON valid tersedia, dan keputusan dicatat di `docs/decisions/DECISIONS.md`. | *None* | **DONE** ✅ |
-| **M1.02** | **DELIVERY** | **Stable ID 64-bit Generator & Identifier Types**<br/>• *DoD:* Generator ID terpusat deterministik per Project, tipe kuat (`InstanceId`, `PinId`, `WireId`, `CircuitId`), unit test keunikan ID lulus. | M1.01 | **DONE** ✅ |
-| **M1.03** | **DELIVERY** | **Pin Contract, Direction, & Bus Width Types**<br/>• *DoD:* Struct `PinDeclaration`, `PinInstance`, enum `PinDirection` (Input, Output, Inout), enum `PinRole`, tipe `SignalWidth` (1..64), unit test validasi lebar pin lulus. | M1.02 | **DONE** ✅ |
-| **M1.04** | **DELIVERY** | **Component Definition & Instance Model**<br/>• *DoD:* Struct `ComponentDefinition`, `ComponentInstance`, registry pustaka primitif L0/L1 bawaan (AND, OR, NOT, XOR, DFF, RAM, dll.), unit test registry lookup lulus. | M1.03 | **DONE** ✅ |
-| **M1.05** | **DELIVERY** | **Geometri WireSegment, Junction, & Tunnel Entities**<br/>• *DoD:* Struct `WireSegment` (geometri rute & dua endpoint), `Junction` (titik cabang topologis), `Tunnel` (label nama & scope), unit test pembentukan entitas lulus. | M1.02 | **DONE** ✅ |
-| **M1.06** | **DELIVERY** | **CircuitDefinition & Project Hierarchy Container**<br/>• *DoD:* Struct `CircuitDefinition` (daftar instance, wire, junction, port) dan `Project` (akar multi-circuit), unit test pembuatan sirkuit bertingkat lulus. | M1.04, M1.05 | **DONE** ✅ |
-| **M1.07** | **DELIVERY** | **Serde JSON Serialization Engine**<br/>• *DoD:* Implementasi `Serialize` untuk semua entitas dokumen, output JSON rapi (*pretty printed*), unit test serialisasi menghasilkan string JSON valid. | M1.06 | **DONE** ✅ |
-| **M1.08** | **DELIVERY** | **Serde JSON Deserialization & Schema Validation**<br/>• *DoD:* Implementasi `Deserialize` dengan pemeriksaan `schema_version`, penanganan skema lama/tidak cocok dengan pesan error deskriptif, unit test parsing lulus. | M1.07 | **DONE** ✅ |
-| **M1.09** | **DELIVERY** | **Round-Trip Fixture Test Suite**<br/>• *DoD:* Test suite otomatis yang memuat berkas JSON fixture, mem-parse ke memory, me-reserialize, dan memvalidasi kesamaan semantik secara bit-exact (*round-trip*). | M1.08 | **DONE** ✅ |
-| **M1.10** | **DELIVERY** | **Diagnostic Framework Model**<br/>• *DoD:* Struct `Diagnostic`, enum `Severity` (Error, Warning, Info), enum `DiagnosticCode` stabil (`CONN-*`, `HIER-*`), pemetaan referensi objek visual (`primary`, `related`). | M1.01 | **DONE** ✅ |
-| **M1.11** | **DELIVERY** | **Structural Validator: Unconnected Mandatory Pins**<br/>• *DoD:* Rule validator untuk mendeteksi pin masukan wajib yang mengambang/tidak terhubung, menghasilkan error `CONN-PIN-UNCONNECTED` dengan ID target yang akurat. | M1.06, M1.10 | **DONE** ✅ |
-| **M1.12** | **DELIVERY** | **Structural Validator: Dangling Wires & Endpoints**<br/>• *DoD:* Rule validator mendeteksi segmen kawat yang menggantung bebas tanpa terhubung ke pin/junction lain, menghasilkan warning `CONN-WIRE-DANGLING`. | M1.06, M1.10 | **DONE** ✅ |
-| **M1.13** | **DELIVERY** | **Structural Validator: Bus Width Mismatch Check**<br/>• *DoD:* Rule validator memeriksa ketidakcocokan lebar bit antara pin yang tersambung, menghasilkan error `CONN-WIDTH-MISMATCH`, serta memverifikasi integritas referensi ID. | M1.06, M1.10 | **DONE** ✅ |
-| **M1.14** | **DELIVERY** | **End-to-End M1 Headless Validation Suite & Scripts**<br/>• *DoD:* Seluruh unit test dan integration test M1 lulus 100%, `cargo fmt --check` dan `cargo clippy -- -D warnings` bersih, skrip `scripts/test.ps1` lulus. | M1.09, M1.11, M1.12, M1.13 | **DONE** ✅ |
+| **M2.01** | **SPIKE** | **Riset & Desain Topologi Net, DSU, dan Ketergantungan Graf**<br/>• *DoD:* Spesifikasi struktur `NetId`, data graph topologi endpoint, strategi DSU deterministik kanonis, penanganan SCC Tarjan, dan keputusan dicatat di `docs/decisions/DECISIONS.md`. | *None* | **READY** 🚀 |
+| **M2.02** | **DELIVERY** | **Implementasi Disjoint Set Union (DSU) Deterministik**<br/>• *DoD:* Modul `crates/dlf-core/src/connectivity/dsu.rs` dengan struct `DisjointSet`, path compression & union-by-rank, penentuan root kanonis berbasis ID minimum untuk determinisme, unit test lulus. | M2.01 | *BLOCKED* |
+| **M2.03** | **DELIVERY** | **Ekstraksi Node Konektivitas & Normalisasi Endpoint**<br/>• *DoD:* Modul `crates/dlf-core/src/connectivity/node.rs` dengan `ConnectionNode` (Pin, Port, Junction, Tunnel), parser yang memetakan seluruh kawat (`WireSegment`) ke node-node konektivitas, unit test ekstraksi lulus. | M2.02 | *BLOCKED* |
+| **M2.04** | **DELIVERY** | **Resolusi Percabangan Junction & Segment Merging**<br/>• *DoD:* Implementasi aturan konektivitas visual Bab 3.4.2 (kawat menempel ke pin, port, junction), penggabungan segmen kawat yang bertemu pada junction via DSU, unit test topologi branching lulus. | M2.03 | *BLOCKED* |
+| **M2.05** | **DELIVERY** | **Resolusi Tunnel Nirkabel (Local & Global Scopes)**<br/>• *DoD:* Penyatuan node tunnel yang memiliki nama label sama dalam satu sirkuit/scope ke net yang sama via DSU, deteksi dan laporan `CONN-TUNNEL-UNPAIRED` bila ada tunnel tanpa pasangan, unit test lulus. | M2.03 | *BLOCKED* |
+| **M2.06** | **DELIVERY** | **Konstruksi Netlist Kanonis & Model Net**<br/>• *DoD:* Struct `Net` (NetId kanonis, daftar pin driver, daftar pin load, lebar bit) dan `Netlist`, transformasi hasil partisi DSU menjadi netlist terstruktur, unit test konstruksi netlist lulus. | M2.04, M2.05 | *BLOCKED* |
+| **M2.07** | **DELIVERY** | **Validasi Elektris Net: Multi-Driver Check (`NET-MULTI-DRIVER`)**<br/>• *DoD:* Aturan validasi net untuk mendeteksi lebih dari satu driver aktif pada net yang tidak diresolusi (dua output pin berkonflik), menghasilkan error `NET-MULTI-DRIVER` dengan daftar driver terkait, unit test lulus. | M2.06 | *BLOCKED* |
+| **M2.08** | **DELIVERY** | **Validasi Elektris Net: Undriven Net Check (`NET-UNDRIVEN`)**<br/>• *DoD:* Aturan validasi net mendeteksi net yang memiliki beban (input pin) tetapi tidak memiliki penggerak (output pin/port), menghasilkan warning/error `NET-UNDRIVEN`, unit test lulus. | M2.06 | *BLOCKED* |
+| **M2.09** | **DELIVERY** | **Konstruksi Graf Ketergantungan Kombinasional**<br/>• *DoD:* Modul `crates/dlf-core/src/analysis/graph.rs` dengan struct `DependencyGraph`, simpul operasi dan sisi aliran sinyal driver-ke-load, pemutusan siklus kombinasional pada register (DFF), unit test graf lulus. | M2.06 | *BLOCKED* |
+| **M2.10** | **DELIVERY** | **Deteksi Siklus & Analisis SCC (Tarjan Algorithm)**<br/>• *DoD:* Modul `crates/dlf-core/src/analysis/scc.rs` dengan algoritma Tarjan untuk mendeteksi Strongly Connected Components, pemisahan wilayah asiklik (DAG) dari siklik (feedback), pelaporan diagnostik `DEP-SCC-OSCILLATION`, unit test lulus. | M2.09 | *BLOCKED* |
+| **M2.11** | **DELIVERY** | **Levelization & Topological Sorting Kombinasional**<br/>• *DoD:* Modul `crates/dlf-core/src/analysis/levelize.rs` untuk menghitung kedalaman level ketergantungan (level = 1 + max(level sumber)), pengurutan deterministik berurutan level dan ID stabil, unit test levelization lulus. | M2.10 | *BLOCKED* |
+| **M2.12** | **DELIVERY** | **Elaborasi Hierarki Sub-Sirkuit Dasar (Target P1)**<br/>• *DoD:* Modul `crates/dlf-core/src/analysis/hierarchy.rs` untuk ekspansi sub-sirkuit chip kustom, port-to-pin binding, deteksi siklus instansiasi rekursif `HIER-RECURSION`, unit test elaborasi lulus. | M2.06 | *BLOCKED* |
+| **M2.13** | **DELIVERY** | **End-to-End M2 Connectivity & Semantic Test Suite**<br/>• *DoD:* Rangkaian integration test komprehensif pada `crates/dlf-core/tests/connectivity_test.rs` dengan aneka variasi sirkuit, seluruh automated tests (`scripts/check.ps1` dan `scripts/test.ps1`) lulus 100%. | M2.07, M2.08, M2.11, M2.12 | *BLOCKED* |
 
 ---
 
-## 3. Ringkasan Status Task M1
-- **Total Task:** 14 Task (1 SPIKE, 13 DELIVERY)
-- **Status:** 0 READY, 0 BLOCKED, 0 IN PROGRESS, 14 DONE
-- **Progress:** `14 / 14` (100.0%)
-
----
-
-## 3. Ringkasan Status Task M1
-- **Total Task:** 14 Task (1 SPIKE, 13 DELIVERY)
-- **Status:** 1 READY, 3 BLOCKED, 0 IN PROGRESS, 10 DONE
-- **Progress:** `10 / 14` (71.4%)
-| **M1.11** | **DELIVERY** | **Structural Validator: Unconnected Mandatory Pins**<br/>• *DoD:* Rule validator untuk mendeteksi pin masukan wajib yang mengambang/tidak terhubung, menghasilkan error `CONN-PIN-UNCONNECTED` dengan ID target yang akurat. | M1.06, M1.10 | *BLOCKED* |
-| **M1.12** | **DELIVERY** | **Structural Validator: Dangling Wires & Endpoints**<br/>• *DoD:* Rule validator mendeteksi segmen kawat yang menggantung bebas tanpa terhubung ke pin/junction lain, menghasilkan warning `CONN-WIRE-DANGLING`. | M1.06, M1.10 | *BLOCKED* |
-| **M1.13** | **DELIVERY** | **Structural Validator: Bus Width Mismatch Check**<br/>• *DoD:* Rule validator memeriksa ketidakcocokan lebar bit antara pin yang tersambung, menghasilkan error `CONN-WIDTH-MISMATCH`, serta memverifikasi integritas referensi ID. | M1.06, M1.10 | *BLOCKED* |
-| **M1.14** | **DELIVERY** | **End-to-End M1 Headless Validation Suite & Scripts**<br/>• *DoD:* Seluruh unit test dan integration test M1 lulus 100%, `cargo fmt --check` dan `cargo clippy -- -D warnings` bersih, skrip `scripts/test.ps1` lulus. | M1.09, M1.11, M1.12, M1.13 | *BLOCKED* |
-
----
-
-## 3. Ringkasan Status Task M1
-- **Total Task:** 14 Task (1 SPIKE, 13 DELIVERY)
-- **Status:** 1 READY, 4 BLOCKED, 0 IN PROGRESS, 9 DONE
-- **Progress:** `9 / 14` (64.3%)
-| **M1.10** | **DELIVERY** | **Diagnostic Framework Model**<br/>• *DoD:* Struct `Diagnostic`, enum `Severity` (Error, Warning, Info), enum `DiagnosticCode` stabil (`CONN-*`, `HIER-*`), pemetaan referensi objek visual (`primary`, `related`). | M1.01 | **READY** 🚀 |
-| **M1.11** | **DELIVERY** | **Structural Validator: Unconnected Mandatory Pins**<br/>• *DoD:* Rule validator untuk mendeteksi pin masukan wajib yang mengambang/tidak terhubung, menghasilkan error `CONN-PIN-UNCONNECTED` dengan ID target yang akurat. | M1.06, M1.10 | *BLOCKED* |
-| **M1.12** | **DELIVERY** | **Structural Validator: Dangling Wires & Endpoints**<br/>• *DoD:* Rule validator mendeteksi segmen kawat yang menggantung bebas tanpa terhubung ke pin/junction lain, menghasilkan warning `CONN-WIRE-DANGLING`. | M1.06, M1.10 | *BLOCKED* |
-| **M1.13** | **DELIVERY** | **Structural Validator: Bus Width Mismatch Check**<br/>• *DoD:* Rule validator memeriksa ketidakcocokan lebar bit antara pin yang tersambung, menghasilkan error `CONN-WIDTH-MISMATCH`, serta memverifikasi integritas referensi ID. | M1.06, M1.10 | *BLOCKED* |
-| **M1.14** | **DELIVERY** | **End-to-End M1 Headless Validation Suite & Scripts**<br/>• *DoD:* Seluruh unit test dan integration test M1 lulus 100%, `cargo fmt --check` dan `cargo clippy -- -D warnings` bersih, skrip `scripts/test.ps1` lulus. | M1.09, M1.11, M1.12, M1.13 | *BLOCKED* |
-
----
-
-## 3. Ringkasan Status Task M1
-- **Total Task:** 14 Task (1 SPIKE, 13 DELIVERY)
-- **Status:** 2 READY, 4 BLOCKED, 0 IN PROGRESS, 8 DONE
-- **Progress:** `8 / 14` (57.1%)
-| **M1.09** | **DELIVERY** | **Round-Trip Fixture Test Suite**<br/>• *DoD:* Test suite otomatis yang memuat berkas JSON fixture, mem-parse ke memory, me-reserialize, dan memvalidasi kesamaan semantik secara bit-exact (*round-trip*). | M1.08 | *BLOCKED* |
-| **M1.10** | **DELIVERY** | **Diagnostic Framework Model**<br/>• *DoD:* Struct `Diagnostic`, enum `Severity` (Error, Warning, Info), enum `DiagnosticCode` stabil (`CONN-*`, `HIER-*`), pemetaan referensi objek visual (`primary`, `related`). | M1.01 | **READY** 🚀 |
-| **M1.11** | **DELIVERY** | **Structural Validator: Unconnected Mandatory Pins**<br/>• *DoD:* Rule validator untuk mendeteksi pin masukan wajib yang mengambang/tidak terhubung, menghasilkan error `CONN-PIN-UNCONNECTED` dengan ID target yang akurat. | M1.06, M1.10 | *BLOCKED* |
-| **M1.12** | **DELIVERY** | **Structural Validator: Dangling Wires & Endpoints**<br/>• *DoD:* Rule validator mendeteksi segmen kawat yang menggantung bebas tanpa terhubung ke pin/junction lain, menghasilkan warning `CONN-WIRE-DANGLING`. | M1.06, M1.10 | *BLOCKED* |
-| **M1.13** | **DELIVERY** | **Structural Validator: Bus Width Mismatch Check**<br/>• *DoD:* Rule validator memeriksa ketidakcocokan lebar bit antara pin yang tersambung, menghasilkan error `CONN-WIDTH-MISMATCH`, serta memverifikasi integritas referensi ID. | M1.06, M1.10 | *BLOCKED* |
-| **M1.14** | **DELIVERY** | **End-to-End M1 Headless Validation Suite & Scripts**<br/>• *DoD:* Seluruh unit test dan integration test M1 lulus 100%, `cargo fmt --check` dan `cargo clippy -- -D warnings` bersih, skrip `scripts/test.ps1` lulus. | M1.09, M1.11, M1.12, M1.13 | *BLOCKED* |
-
----
-
-## 3. Ringkasan Status Task M1
-- **Total Task:** 14 Task (1 SPIKE, 13 DELIVERY)
-- **Status:** 2 READY, 5 BLOCKED, 0 IN PROGRESS, 7 DONE
-- **Progress:** `7 / 14` (50.0%)
-| **M1.09** | **DELIVERY** | **Round-Trip Fixture Test Suite**<br/>• *DoD:* Test suite otomatis yang memuat berkas JSON fixture, mem-parse ke memory, me-reserialize, dan memvalidasi kesamaan semantik secara bit-exact (*round-trip*). | M1.08 | *BLOCKED* |
-| **M1.10** | **DELIVERY** | **Diagnostic Framework Model**<br/>• *DoD:* Struct `Diagnostic`, enum `Severity` (Error, Warning, Info), enum `DiagnosticCode` stabil (`CONN-*`, `HIER-*`), pemetaan referensi objek visual (`primary`, `related`). | M1.01 | **READY** 🚀 |
-| **M1.11** | **DELIVERY** | **Structural Validator: Unconnected Mandatory Pins**<br/>• *DoD:* Rule validator untuk mendeteksi pin masukan wajib yang mengambang/tidak terhubung, menghasilkan error `CONN-PIN-UNCONNECTED` dengan ID target yang akurat. | M1.06, M1.10 | *BLOCKED* |
-| **M1.12** | **DELIVERY** | **Structural Validator: Dangling Wires & Endpoints**<br/>• *DoD:* Rule validator mendeteksi segmen kawat yang menggantung bebas tanpa terhubung ke pin/junction lain, menghasilkan warning `CONN-WIRE-DANGLING`. | M1.06, M1.10 | *BLOCKED* |
-| **M1.13** | **DELIVERY** | **Structural Validator: Bus Width Mismatch Check**<br/>• *DoD:* Rule validator memeriksa ketidakcocokan lebar bit antara pin yang tersambung, menghasilkan error `CONN-WIDTH-MISMATCH`, serta memverifikasi integritas referensi ID. | M1.06, M1.10 | *BLOCKED* |
-| **M1.14** | **DELIVERY** | **End-to-End M1 Headless Validation Suite & Scripts**<br/>• *DoD:* Seluruh unit test dan integration test M1 lulus 100%, `cargo fmt --check` dan `cargo clippy -- -D warnings` bersih, skrip `scripts/test.ps1` lulus. | M1.09, M1.11, M1.12, M1.13 | *BLOCKED* |
-
----
-
-## 3. Ringkasan Status Task M1
-- **Total Task:** 14 Task (1 SPIKE, 13 DELIVERY)
-- **Status:** 2 READY, 6 BLOCKED, 0 IN PROGRESS, 6 DONE
-- **Progress:** `6 / 14` (42.9%)
-| **M1.07** | **DELIVERY** | **Serde JSON Serialization Engine**<br/>• *DoD:* Implementasi `Serialize` untuk semua entitas dokumen, output JSON rapi (*pretty printed*), unit test serialisasi menghasilkan string JSON valid. | M1.06 | *BLOCKED* |
-| **M1.08** | **DELIVERY** | **Serde JSON Deserialization & Schema Validation**<br/>• *DoD:* Implementasi `Deserialize` dengan pemeriksaan `schema_version`, penanganan skema lama/tidak cocok dengan pesan error deskriptif, unit test parsing lulus. | M1.07 | *BLOCKED* |
-| **M1.09** | **DELIVERY** | **Round-Trip Fixture Test Suite**<br/>• *DoD:* Test suite otomatis yang memuat berkas JSON fixture, mem-parse ke memory, me-reserialize, dan memvalidasi kesamaan semantik secara bit-exact (*round-trip*). | M1.08 | *BLOCKED* |
-| **M1.10** | **DELIVERY** | **Diagnostic Framework Model**<br/>• *DoD:* Struct `Diagnostic`, enum `Severity` (Error, Warning, Info), enum `DiagnosticCode` stabil (`CONN-*`, `HIER-*`), pemetaan referensi objek visual (`primary`, `related`). | M1.01 | **READY** 🚀 |
-| **M1.11** | **DELIVERY** | **Structural Validator: Unconnected Mandatory Pins**<br/>• *DoD:* Rule validator untuk mendeteksi pin masukan wajib yang mengambang/tidak terhubung, menghasilkan error `CONN-PIN-UNCONNECTED` dengan ID target yang akurat. | M1.06, M1.10 | *BLOCKED* |
-| **M1.12** | **DELIVERY** | **Structural Validator: Dangling Wires & Endpoints**<br/>• *DoD:* Rule validator mendeteksi segmen kawat yang menggantung bebas tanpa terhubung ke pin/junction lain, menghasilkan warning `CONN-WIRE-DANGLING`. | M1.06, M1.10 | *BLOCKED* |
-| **M1.13** | **DELIVERY** | **Structural Validator: Bus Width Mismatch Check**<br/>• *DoD:* Rule validator memeriksa ketidakcocokan lebar bit antara pin yang tersambung, menghasilkan error `CONN-WIDTH-MISMATCH`, serta memverifikasi integritas referensi ID. | M1.06, M1.10 | *BLOCKED* |
-| **M1.14** | **DELIVERY** | **End-to-End M1 Headless Validation Suite & Scripts**<br/>• *DoD:* Seluruh unit test dan integration test M1 lulus 100%, `cargo fmt --check` dan `cargo clippy -- -D warnings` bersih, skrip `scripts/test.ps1` lulus. | M1.09, M1.11, M1.12, M1.13 | *BLOCKED* |
-
----
-
-## 3. Ringkasan Status Task M1
-- **Total Task:** 14 Task (1 SPIKE, 13 DELIVERY)
-- **Status:** 2 READY, 7 BLOCKED, 0 IN PROGRESS, 5 DONE
-- **Progress:** `5 / 14` (35.7%)
-| **M1.07** | **DELIVERY** | **Serde JSON Serialization Engine**<br/>• *DoD:* Implementasi `Serialize` untuk semua entitas dokumen, output JSON rapi (*pretty printed*), unit test serialisasi menghasilkan string JSON valid. | M1.06 | *BLOCKED* |
-| **M1.08** | **DELIVERY** | **Serde JSON Deserialization & Schema Validation**<br/>• *DoD:* Implementasi `Deserialize` dengan pemeriksaan `schema_version`, penanganan skema lama/tidak cocok dengan pesan error deskriptif, unit test parsing lulus. | M1.07 | *BLOCKED* |
-| **M1.09** | **DELIVERY** | **Round-Trip Fixture Test Suite**<br/>• *DoD:* Test suite otomatis yang memuat berkas JSON fixture, mem-parse ke memory, me-reserialize, dan memvalidasi kesamaan semantik secara bit-exact (*round-trip*). | M1.08 | *BLOCKED* |
-| **M1.10** | **DELIVERY** | **Diagnostic Framework Model**<br/>• *DoD:* Struct `Diagnostic`, enum `Severity` (Error, Warning, Info), enum `DiagnosticCode` stabil (`CONN-*`, `HIER-*`), pemetaan referensi objek visual (`primary`, `related`). | M1.01 | **READY** 🚀 |
-| **M1.11** | **DELIVERY** | **Structural Validator: Unconnected Mandatory Pins**<br/>• *DoD:* Rule validator untuk mendeteksi pin masukan wajib yang mengambang/tidak terhubung, menghasilkan error `CONN-PIN-UNCONNECTED` dengan ID target yang akurat. | M1.06, M1.10 | *BLOCKED* |
-| **M1.12** | **DELIVERY** | **Structural Validator: Dangling Wires & Endpoints**<br/>• *DoD:* Rule validator mendeteksi segmen kawat yang menggantung bebas tanpa terhubung ke pin/junction lain, menghasilkan warning `CONN-WIRE-DANGLING`. | M1.06, M1.10 | *BLOCKED* |
-| **M1.13** | **DELIVERY** | **Structural Validator: Bus Width Mismatch Check**<br/>• *DoD:* Rule validator memeriksa ketidakcocokan lebar bit antara pin yang tersambung, menghasilkan error `CONN-WIDTH-MISMATCH`, serta memverifikasi integritas referensi ID. | M1.06, M1.10 | *BLOCKED* |
-| **M1.14** | **DELIVERY** | **End-to-End M1 Headless Validation Suite & Scripts**<br/>• *DoD:* Seluruh unit test dan integration test M1 lulus 100%, `cargo fmt --check` dan `cargo clippy -- -D warnings` bersih, skrip `scripts/test.ps1` lulus. | M1.09, M1.11, M1.12, M1.13 | *BLOCKED* |
-
----
-
-## 3. Ringkasan Status Task M1
-- **Total Task:** 14 Task (1 SPIKE, 13 DELIVERY)
-- **Status:** 2 READY, 8 BLOCKED, 0 IN PROGRESS, 4 DONE
-- **Progress:** `4 / 14` (28.6%)
-| **M1.05** | **DELIVERY** | **Geometri WireSegment, Junction, & Tunnel Entities**<br/>• *DoD:* Struct `WireSegment` (geometri rute & dua endpoint), `Junction` (titik cabang topologis), `Tunnel` (label nama & scope), unit test pembentukan entitas lulus. | M1.02 | **READY** 🚀 |
-| **M1.06** | **DELIVERY** | **CircuitDefinition & Project Hierarchy Container**<br/>• *DoD:* Struct `CircuitDefinition` (daftar instance, wire, junction, port) dan `Project` (akar multi-circuit), unit test pembuatan sirkuit bertingkat lulus. | M1.04, M1.05 | *BLOCKED* |
-| **M1.07** | **DELIVERY** | **Serde JSON Serialization Engine**<br/>• *DoD:* Implementasi `Serialize` untuk semua entitas dokumen, output JSON rapi (*pretty printed*), unit test serialisasi menghasilkan string JSON valid. | M1.06 | *BLOCKED* |
-| **M1.08** | **DELIVERY** | **Serde JSON Deserialization & Schema Validation**<br/>• *DoD:* Implementasi `Deserialize` dengan pemeriksaan `schema_version`, penanganan skema lama/tidak cocok dengan pesan error deskriptif, unit test parsing lulus. | M1.07 | *BLOCKED* |
-| **M1.09** | **DELIVERY** | **Round-Trip Fixture Test Suite**<br/>• *DoD:* Test suite otomatis yang memuat berkas JSON fixture, mem-parse ke memory, me-reserialize, dan memvalidasi kesamaan semantik secara bit-exact (*round-trip*). | M1.08 | *BLOCKED* |
-| **M1.10** | **DELIVERY** | **Diagnostic Framework Model**<br/>• *DoD:* Struct `Diagnostic`, enum `Severity` (Error, Warning, Info), enum `DiagnosticCode` stabil (`CONN-*`, `HIER-*`), pemetaan referensi objek visual (`primary`, `related`). | M1.01 | **READY** 🚀 |
-| **M1.11** | **DELIVERY** | **Structural Validator: Unconnected Mandatory Pins**<br/>• *DoD:* Rule validator untuk mendeteksi pin masukan wajib yang mengambang/tidak terhubung, menghasilkan error `CONN-PIN-UNCONNECTED` dengan ID target yang akurat. | M1.06, M1.10 | *BLOCKED* |
-| **M1.12** | **DELIVERY** | **Structural Validator: Dangling Wires & Endpoints**<br/>• *DoD:* Rule validator mendeteksi segmen kawat yang menggantung bebas tanpa terhubung ke pin/junction lain, menghasilkan warning `CONN-WIRE-DANGLING`. | M1.06, M1.10 | *BLOCKED* |
-| **M1.13** | **DELIVERY** | **Structural Validator: Bus Width Mismatch Check**<br/>• *DoD:* Rule validator memeriksa ketidakcocokan lebar bit antara pin yang tersambung, menghasilkan error `CONN-WIDTH-MISMATCH`, serta memverifikasi integritas referensi ID. | M1.06, M1.10 | *BLOCKED* |
-| **M1.14** | **DELIVERY** | **End-to-End M1 Headless Validation Suite & Scripts**<br/>• *DoD:* Seluruh unit test dan integration test M1 lulus 100%, `cargo fmt --check` dan `cargo clippy -- -D warnings` bersih, skrip `scripts/test.ps1` lulus. | M1.09, M1.11, M1.12, M1.13 | *BLOCKED* |
-
----
-
-## 3. Ringkasan Status Task M1
-- **Total Task:** 14 Task (1 SPIKE, 13 DELIVERY)
-- **Status:** 3 READY, 8 BLOCKED, 0 IN PROGRESS, 3 DONE
-- **Progress:** `3 / 14` (21.4%)
-| **M1.04** | **DELIVERY** | **Component Definition & Instance Model**<br/>• *DoD:* Struct `ComponentDefinition`, `ComponentInstance`, registry pustaka primitif L0/L1 bawaan (AND, OR, NOT, XOR, DFF, RAM, dll.), unit test registry lookup lulus. | M1.03 | *BLOCKED* |
-| **M1.05** | **DELIVERY** | **Geometri WireSegment, Junction, & Tunnel Entities**<br/>• *DoD:* Struct `WireSegment` (geometri rute & dua endpoint), `Junction` (titik cabang topologis), `Tunnel` (label nama & scope), unit test pembentukan entitas lulus. | M1.02 | **READY** 🚀 |
-| **M1.06** | **DELIVERY** | **CircuitDefinition & Project Hierarchy Container**<br/>• *DoD:* Struct `CircuitDefinition` (daftar instance, wire, junction, port) dan `Project` (akar multi-circuit), unit test pembuatan sirkuit bertingkat lulus. | M1.04, M1.05 | *BLOCKED* |
-| **M1.07** | **DELIVERY** | **Serde JSON Serialization Engine**<br/>• *DoD:* Implementasi `Serialize` untuk semua entitas dokumen, output JSON rapi (*pretty printed*), unit test serialisasi menghasilkan string JSON valid. | M1.06 | *BLOCKED* |
-| **M1.08** | **DELIVERY** | **Serde JSON Deserialization & Schema Validation**<br/>• *DoD:* Implementasi `Deserialize` dengan pemeriksaan `schema_version`, penanganan skema lama/tidak cocok dengan pesan error deskriptif, unit test parsing lulus. | M1.07 | *BLOCKED* |
-| **M1.09** | **DELIVERY** | **Round-Trip Fixture Test Suite**<br/>• *DoD:* Test suite otomatis yang memuat berkas JSON fixture, mem-parse ke memory, me-reserialize, dan memvalidasi kesamaan semantik secara bit-exact (*round-trip*). | M1.08 | *BLOCKED* |
-| **M1.10** | **DELIVERY** | **Diagnostic Framework Model**<br/>• *DoD:* Struct `Diagnostic`, enum `Severity` (Error, Warning, Info), enum `DiagnosticCode` stabil (`CONN-*`, `HIER-*`), pemetaan referensi objek visual (`primary`, `related`). | M1.01 | **READY** 🚀 |
-| **M1.11** | **DELIVERY** | **Structural Validator: Unconnected Mandatory Pins**<br/>• *DoD:* Rule validator untuk mendeteksi pin masukan wajib yang mengambang/tidak terhubung, menghasilkan error `CONN-PIN-UNCONNECTED` dengan ID target yang akurat. | M1.06, M1.10 | *BLOCKED* |
-| **M1.12** | **DELIVERY** | **Structural Validator: Dangling Wires & Endpoints**<br/>• *DoD:* Rule validator mendeteksi segmen kawat yang menggantung bebas tanpa terhubung ke pin/junction lain, menghasilkan warning `CONN-WIRE-DANGLING`. | M1.06, M1.10 | *BLOCKED* |
-| **M1.13** | **DELIVERY** | **Structural Validator: Bus Width Mismatch Check**<br/>• *DoD:* Rule validator memeriksa ketidakcocokan lebar bit antara pin yang tersambung, menghasilkan error `CONN-WIDTH-MISMATCH`, serta memverifikasi integritas referensi ID. | M1.06, M1.10 | *BLOCKED* |
-| **M1.14** | **DELIVERY** | **End-to-End M1 Headless Validation Suite & Scripts**<br/>• *DoD:* Seluruh unit test dan integration test M1 lulus 100%, `cargo fmt --check` dan `cargo clippy -- -D warnings` bersih, skrip `scripts/test.ps1` lulus. | M1.09, M1.11, M1.12, M1.13 | *BLOCKED* |
-
----
-
-## 3. Ringkasan Status Task M1
-- **Total Task:** 14 Task (1 SPIKE, 13 DELIVERY)
-- **Status:** 3 READY, 9 BLOCKED, 0 IN PROGRESS, 2 DONE
-- **Progress:** `2 / 14` (14.3%)
-| **M1.03** | **DELIVERY** | **Pin Contract, Direction, & Bus Width Types**<br/>• *DoD:* Struct `PinDeclaration`, `PinInstance`, enum `PinDirection` (Input, Output, Inout), enum `PinRole`, tipe `SignalWidth` (1..64), unit test validasi lebar pin lulus. | M1.02 | *BLOCKED* |
-| **M1.04** | **DELIVERY** | **Component Definition & Instance Model**<br/>• *DoD:* Struct `ComponentDefinition`, `ComponentInstance`, registry pustaka primitif L0/L1 bawaan (AND, OR, NOT, XOR, DFF, RAM, dll.), unit test registry lookup lulus. | M1.03 | *BLOCKED* |
-| **M1.05** | **DELIVERY** | **Geometri WireSegment, Junction, & Tunnel Entities**<br/>• *DoD:* Struct `WireSegment` (geometri rute & dua endpoint), `Junction` (titik cabang topologis), `Tunnel` (label nama & scope), unit test pembentukan entitas lulus. | M1.02 | *BLOCKED* |
-| **M1.06** | **DELIVERY** | **CircuitDefinition & Project Hierarchy Container**<br/>• *DoD:* Struct `CircuitDefinition` (daftar instance, wire, junction, port) dan `Project` (akar multi-circuit), unit test pembuatan sirkuit bertingkat lulus. | M1.04, M1.05 | *BLOCKED* |
-| **M1.07** | **DELIVERY** | **Serde JSON Serialization Engine**<br/>• *DoD:* Implementasi `Serialize` untuk semua entitas dokumen, output JSON rapi (*pretty printed*), unit test serialisasi menghasilkan string JSON valid. | M1.06 | *BLOCKED* |
-| **M1.08** | **DELIVERY** | **Serde JSON Deserialization & Schema Validation**<br/>• *DoD:* Implementasi `Deserialize` dengan pemeriksaan `schema_version`, penanganan skema lama/tidak cocok dengan pesan error deskriptif, unit test parsing lulus. | M1.07 | *BLOCKED* |
-| **M1.09** | **DELIVERY** | **Round-Trip Fixture Test Suite**<br/>• *DoD:* Test suite otomatis yang memuat berkas JSON fixture, mem-parse ke memory, me-reserialize, dan memvalidasi kesamaan semantik secara bit-exact (*round-trip*). | M1.08 | *BLOCKED* |
-| **M1.10** | **DELIVERY** | **Diagnostic Framework Model**<br/>• *DoD:* Struct `Diagnostic`, enum `Severity` (Error, Warning, Info), enum `DiagnosticCode` stabil (`CONN-*`, `HIER-*`), pemetaan referensi objek visual (`primary`, `related`). | M1.01 | **READY** 🚀 |
-| **M1.11** | **DELIVERY** | **Structural Validator: Unconnected Mandatory Pins**<br/>• *DoD:* Rule validator untuk mendeteksi pin masukan wajib yang mengambang/tidak terhubung, menghasilkan error `CONN-PIN-UNCONNECTED` dengan ID target yang akurat. | M1.06, M1.10 | *BLOCKED* |
-| **M1.12** | **DELIVERY** | **Structural Validator: Dangling Wires & Endpoints**<br/>• *DoD:* Rule validator mendeteksi segmen kawat yang menggantung bebas tanpa terhubung ke pin/junction lain, menghasilkan warning `CONN-WIRE-DANGLING`. | M1.06, M1.10 | *BLOCKED* |
-| **M1.13** | **DELIVERY** | **Structural Validator: Bus Width Mismatch Check**<br/>• *DoD:* Rule validator memeriksa ketidakcocokan lebar bit antara pin yang tersambung, menghasilkan error `CONN-WIDTH-MISMATCH`, serta memverifikasi integritas referensi ID. | M1.06, M1.10 | *BLOCKED* |
-| **M1.14** | **DELIVERY** | **End-to-End M1 Headless Validation Suite & Scripts**<br/>• *DoD:* Seluruh unit test dan integration test M1 lulus 100%, `cargo fmt --check` dan `cargo clippy -- -D warnings` bersih, skrip `scripts/test.ps1` lulus. | M1.09, M1.11, M1.12, M1.13 | *BLOCKED* |
-
----
-
-## 3. Ringkasan Status Task M1
-- **Total Task:** 14 Task (1 SPIKE, 13 DELIVERY)
-- **Status:** 2 READY, 11 BLOCKED, 0 IN PROGRESS, 1 DONE
-- **Progress:** `1 / 14` (7.1%)
+## 3. Ringkasan Status Task M2
+- **Total Task:** 13 Task (1 SPIKE, 12 DELIVERY)
+- **Status:** 1 READY, 12 BLOCKED, 0 IN PROGRESS, 0 DONE
+- **Progress:** `0 / 13` (0.0%)

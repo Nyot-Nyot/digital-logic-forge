@@ -1,6 +1,6 @@
 # Digital Logic Forge (DLF) — Progress Dashboard
 
-> **Status Saat Ini:** Milestone M1 (Headless Circuit Model) — **ACCEPTED** ✅ → Siap Masuk Pre-Sprint M2  
+> **Status Saat Ini:** Milestone M2 (Connectivity & Semantic Frontend) — **IN PROGRESS (Pre-Sprint Completed)**  
 > **Terakhir Diperbarui:** 19 November 2026  
 > **Single Source of Truth (SSoT):** [Proposal TA (Markdown)](../compiled%20circuit%20simulator.md), [Sprint Progress](PROGRESS.md), & Dokumen ini.
 
@@ -12,7 +12,7 @@
 | :---: | :--- | :---: | :---: | :--- |
 | **M0** | **Implementation Baseline** | P0 | **ACCEPTED** ✅ | Kerangka workspace Cargo, binding GDExtension, smoke test, baseline prototype canvas |
 | **M1** | **Headless Circuit Model** | P0 | **ACCEPTED** ✅ | Dokumen JSON, Stable ID 64-bit, structural validator |
-| **M2** | **Connectivity & Semantic Frontend** | P0 | *Not Started* | Resolusi net & junction, validasi lebar bus, SCC detection |
+| **M2** | **Connectivity & Semantic Frontend** | P0 | **IN PROGRESS** 🚀 | Resolusi net & junction, validasi lebar bus, SCC detection |
 | **M3** | **First Compiled Simulation** | P0 | *Not Started* | Snapshot -> Compile -> IR ringkas -> Runtime B1 vs B0 oracle |
 | **M4** | **Stateful Simulation** | P0 | *Not Started* | Clock domain, register simultaneous commit, RAM/ROM |
 | **M5** | **Editor Vertical Slice** | P0 | *Not Started* | Canvas editor Godot, placement, wiring, inspector UI |
