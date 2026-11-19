@@ -13,6 +13,9 @@
 /// Versi semantik dari mesin inti DLF.
 pub const CORE_VERSION: &str = env!("CARGO_PKG_VERSION");
 
+/// Modul model dokumen rangkaian dan entitas penyuntingan visual.
+pub mod model;
+
 /// Modul worker simulasi latar belakang dan protokol snapshot.
 pub mod worker;
 
