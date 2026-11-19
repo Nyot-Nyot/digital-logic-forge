@@ -17,6 +17,7 @@ pub const MAX_SIGNAL_WIDTH: u8 = 64;
 
 /// Lebar bus sinyal digital yang divalidasi dengan aman dalam rentang 1 hingga 64 bit.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
+#[serde(try_from = "u8", into = "u8")]
 #[repr(transparent)]
 pub struct SignalWidth(u8);
 
