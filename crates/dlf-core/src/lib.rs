@@ -19,6 +19,9 @@ pub mod model;
 /// Modul kerangka kerja diagnostik dan pelaporan error terstruktur.
 pub mod diagnostic;
 
+/// Modul validasi aturan struktural dokumen rangkaian.
+pub mod validation;
+
 /// Modul worker simulasi latar belakang dan protokol snapshot.
 pub mod worker;
 
