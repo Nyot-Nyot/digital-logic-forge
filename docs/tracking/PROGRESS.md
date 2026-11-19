@@ -8,7 +8,7 @@
 
 ## 1. Task yang Sedang Berjalan (IN PROGRESS)
 
-> *Task M1.11, M1.12, dan M1.13 telah selesai. Siap melanjutkan ke Task M1.14 (End-to-End M1 Headless Validation Suite & Scripts).*
+> *Seluruh task Milestone M1 telah selesai (14/14 - 100%). Memasuki fase POST-SPRINT M1.*
 
 ---
 
@@ -29,14 +29,14 @@
 | **M1.11** | **DELIVERY** | **Structural Validator: Unconnected Mandatory Pins**<br/>• *DoD:* Rule validator untuk mendeteksi pin masukan wajib yang mengambang/tidak terhubung, menghasilkan error `CONN-PIN-UNCONNECTED` dengan ID target yang akurat. | M1.06, M1.10 | **DONE** ✅ |
 | **M1.12** | **DELIVERY** | **Structural Validator: Dangling Wires & Endpoints**<br/>• *DoD:* Rule validator mendeteksi segmen kawat yang menggantung bebas tanpa terhubung ke pin/junction lain, menghasilkan warning `CONN-WIRE-DANGLING`. | M1.06, M1.10 | **DONE** ✅ |
 | **M1.13** | **DELIVERY** | **Structural Validator: Bus Width Mismatch Check**<br/>• *DoD:* Rule validator memeriksa ketidakcocokan lebar bit antara pin yang tersambung, menghasilkan error `CONN-WIDTH-MISMATCH`, serta memverifikasi integritas referensi ID. | M1.06, M1.10 | **DONE** ✅ |
-| **M1.14** | **DELIVERY** | **End-to-End M1 Headless Validation Suite & Scripts**<br/>• *DoD:* Seluruh unit test dan integration test M1 lulus 100%, `cargo fmt --check` dan `cargo clippy -- -D warnings` bersih, skrip `scripts/test.ps1` lulus. | M1.09, M1.11, M1.12, M1.13 | **READY** 🚀 |
+| **M1.14** | **DELIVERY** | **End-to-End M1 Headless Validation Suite & Scripts**<br/>• *DoD:* Seluruh unit test dan integration test M1 lulus 100%, `cargo fmt --check` dan `cargo clippy -- -D warnings` bersih, skrip `scripts/test.ps1` lulus. | M1.09, M1.11, M1.12, M1.13 | **DONE** ✅ |
 
 ---
 
 ## 3. Ringkasan Status Task M1
 - **Total Task:** 14 Task (1 SPIKE, 13 DELIVERY)
-- **Status:** 1 READY, 0 BLOCKED, 0 IN PROGRESS, 13 DONE
-- **Progress:** `13 / 14` (92.9%)
+- **Status:** 0 READY, 0 BLOCKED, 0 IN PROGRESS, 14 DONE
+- **Progress:** `14 / 14` (100.0%)
 
 ---
 

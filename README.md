@@ -10,9 +10,9 @@
 
 | Parameter | Keterangan |
 | :--- | :--- |
-| **Milestone Aktif** | **M1: Headless Circuit Model** 🚀 *(M0 Selesai & Terverifikasi)* |
-| **Fokus Pekerjaan** | Skema dokumen rangkaian JSON, Stable ID 64-bit, structural validator |
-| **Status Engine** | Baseline integrasi Rust Core + Godot 4.7.2 GDExtension terbukti 100% lulus |
+| **Milestone Aktif** | **M2: Connectivity & Semantic Frontend** 🚀 *(M0 & M1 Selesai & Terverifikasi)* |
+| **Fokus Pekerjaan** | Normalisasi geometri kawat, Resolusi net DSU kanonis, Multi-driver & Bus width check, Deteksi SCC Tarjan |
+| **Status Engine** | Dokumen JSON, Stable ID 64-bit, roundtrip fixture, dan structural validator terbukti 100% lulus (31 tests) |
 | **Single Source of Truth** | [Proposal TA (Markdown)](docs/compiled%20circuit%20simulator.md) & [Progress Dashboard](docs/tracking/DASHBOARD.md) |
 
 ---
@@ -25,7 +25,7 @@ Proyek ini dibangun secara inkremental dan digerakkan oleh risiko (*risk-driven 
 
 ```mermaid
 flowchart LR
-    M0["M0: Baseline (Done)"] --> M1["M1: Headless Model"]
+    M0["M0: Baseline (Done)"] --> M1["M1: Headless Model (Done)"]
     M1 --> M2["M2: Connectivity"]
     M2 --> M3["M3: First Compiled"]
     M3 --> M4["M4: Stateful Sim"]
@@ -38,9 +38,9 @@ flowchart LR
     classDef done fill:#16a34a,stroke:#15803d,stroke-width:2px,color:#fff;
     classDef active fill:#2563eb,stroke:#1d4ed8,stroke-width:2px,color:#fff;
     classDef pending fill:#374151,stroke:#4b5563,stroke-width:1px,color:#9ca3af;
-    class M0 done;
-    class M1 active;
-    class M2,M3,M4,M5,M6,M7,M8,M9 pending;
+    class M0,M1 done;
+    class M2 active;
+    class M3,M4,M5,M6,M7,M8,M9 pending;
 ```
 
 ### 2. Siklus Eksekusi per Milestone (The 3-Phase Milestone Loop)
