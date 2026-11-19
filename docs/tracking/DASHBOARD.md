@@ -1,9 +1,8 @@
 # Digital Logic Forge (DLF) — Progress Dashboard
 
-> **Status Saat Ini:** Milestone M0 (Implementation Baseline) — **ACCEPTED [LULUS]**  
-> **Milestone Berikutnya:** Milestone M1 (Headless Circuit Model) — *Ready to Start*  
-> **Terakhir Diperbarui:** 18 November 2026  
-> **Single Source of Truth (SSoT):** [Proposal TA (Markdown)](../compiled%20circuit%20simulator.md) & Dokumen ini.
+> **Status Saat Ini:** Milestone M1 (Headless Circuit Model) — **IN PROGRESS (Pre-Sprint Completed)**  
+> **Terakhir Diperbarui:** 19 November 2026  
+> **Single Source of Truth (SSoT):** [Proposal TA (Markdown)](../compiled%20circuit%20simulator.md), [Sprint Progress](PROGRESS.md), & Dokumen ini.
 
 ---
 
@@ -12,7 +11,7 @@
 | ID | Milestone | Prioritas | Status | Target Deliverable Utama |
 | :---: | :--- | :---: | :---: | :--- |
 | **M0** | **Implementation Baseline** | P0 | **ACCEPTED** ✅ | Kerangka workspace Cargo, binding GDExtension, smoke test, baseline prototype canvas |
-| **M1** | **Headless Circuit Model** | P0 | **READY** 🚀 | Dokumen JSON, Stable ID 64-bit, structural validator |
+| **M1** | **Headless Circuit Model** | P0 | **IN PROGRESS** 🚀 | Dokumen JSON, Stable ID 64-bit, structural validator |
 | **M2** | **Connectivity & Semantic Frontend** | P0 | *Not Started* | Resolusi net & junction, validasi lebar bus, SCC detection |
 | **M3** | **First Compiled Simulation** | P0 | *Not Started* | Snapshot -> Compile -> IR ringkas -> Runtime B1 vs B0 oracle |
 | **M4** | **Stateful Simulation** | P0 | *Not Started* | Clock domain, register simultaneous commit, RAM/ROM |

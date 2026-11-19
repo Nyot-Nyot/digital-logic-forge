@@ -45,9 +45,37 @@ Proyek ini menerapkan prinsip **Elephant-Goldfish Model**:
 
 ---
 
-## 4. Pelacakan & Disiplin Sesi
+## 4. Siklus Kerja Milestone (The 3-Phase Milestone Loop)
 
-1. Setiap sesi baru wajib diawali dengan memeriksa `docs/tracking/DASHBOARD.md` untuk mengidentifikasi milestone aktif dan sub-task berikutnya.
-2. Setiap kali menyelesaikan sub-task atau milestone, perbarui checklist pada `docs/tracking/DASHBOARD.md` dan `README.md`.
+Setiap milestone wajib dijalankan melalui 3 fase berurutan:
+
+### 1. PRE-SPRINT (30 menit)
+- **Baca Milestone**: Pelajari detail milestone aktif di proposal (`docs/compiled circuit simulator.md`).
+- **Glimpse Milestone Berikutnya**: Baca sekilas milestone selanjutnya agar rancangan tidak mentok atau *breaking*.
+- **Dekomposisi Task**: Pecah milestone menjadi **8–15 task terukur** dengan *Definition of Done* (DoD) yang dapat diuji (*testable*).
+- **Klasifikasi Task**: Tandai setiap task sebagai **SPIKE** (riset/eksperimen/pembuktian) atau **DELIVERY** (fitur/kode produksi).
+- **Pemetaan Dependensi**: Tentukan urutan eksekusi dan tandai mana yang `READY` vs `BLOCKED` oleh task lain.
+- **Simpan Rencana**: Tulis seluruh backlog milestone di `docs/tracking/PROGRESS.md`.
+
+### 2. DAILY LOOP (Sepanjang Milestone)
+- **Pilih Task**: Ambil 1 task yang berstatus `READY`, ubah statusnya menjadi `IN PROGRESS` di `docs/tracking/PROGRESS.md`.
+- **Eksekusi**:
+  - Jika **SPIKE**: Lakukan eksperimen/benchmark terisolasi, catat keputusan teknis dan *trade-off* di `docs/decisions/DECISIONS.md` (atau ADR).
+  - Jika **DELIVERY**: Tulis kode implementasi + test (unit test/fixture), pastikan lolos `cargo fmt` dan `cargo clippy`.
+- **Penyelesaian**: Setelah DoD task tercapai, tandai `DONE` di `docs/tracking/PROGRESS.md`, dan lakukan git commit atomik semantik.
+
+### 3. POST-SPRINT (30 menit)
+- **Verifikasi Akhir**: Pastikan semua task di `PROGRESS.md` berstatus `DONE` dan seluruh *Exit Criteria* milestone tercapai.
+- **Retrospective**: Tulis evaluasi, kendala, temuan, dan metrik di `docs/tracking/RETROSPECTIVE.md`.
+- **Update Dashboard**: Sinkronkan status milestone di `docs/tracking/DASHBOARD.md` dan `README.md`.
+- **Patch Proposal**: Perbarui dokumen proposal markdown jika ada penyesuaian teknis nyata (*bidirectional sync*).
+- **Lanjut**: Baru kemudian melangkah ke Pre-Sprint milestone berikutnya.
+
+---
+
+## 5. Pelacakan & Disiplin Sesi
+
+1. Setiap sesi baru wajib diawali dengan memeriksa `docs/tracking/PROGRESS.md` dan `docs/tracking/DASHBOARD.md` untuk mengidentifikasi posisi dan task aktif.
+2. Setiap kali menyelesaikan sub-task atau milestone, perbarui checklist pada `docs/tracking/PROGRESS.md` dan `docs/tracking/DASHBOARD.md`.
 3. Gunakan git commit atomik dengan pesan semantik yang menyertakan nomor milestone, contoh:
    `feat(core): implement levelized topo-sort for combinational netlist [M2/KF-04]`

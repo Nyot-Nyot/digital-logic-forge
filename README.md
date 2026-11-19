@@ -43,33 +43,38 @@ flowchart LR
     class M2,M3,M4,M5,M6,M7,M8,M9 pending;
 ```
 
-### 2. Siklus Eksekusi 5 Tahap per Milestone (The 5-Step Loop)
+### 2. Siklus Eksekusi per Milestone (The 3-Phase Milestone Loop)
 
-Setiap tahapan milestone wajib melalui 5 tahapan berurutan sebelum dinyatakan selesai (*Definition of Done*):
+Setiap tahapan milestone dieksekusi secara disiplin melalui siklus 3 fase berikut:
 
 ```mermaid
-sequenceDiagram
-    autonumber
-    actor Dev as Developer (Dzaki)
-    participant SSoT as SSoT (Proposal & Dashboard)
-    participant Core as Rust Core Engine
-    participant Test as Test Harness (B0 Oracle)
-    participant UI as Godot GDExtension
+flowchart TD
+    subgraph PreSprint ["1. PRE-SPRINT (30 Menit)"]
+        A1["Baca Proposal Milestone Aktif"] --> A2["Glimpse Milestone Berikutnya"]
+        A2 --> A3["Dekomposisi 8-15 Task Terukur"]
+        A3 --> A4["Klasifikasi: SPIKE vs DELIVERY"]
+        A4 --> A5["Petakan Dependensi (READY vs BLOCKED)"]
+        A5 --> A6["Simpan di docs/tracking/PROGRESS.md"]
+    end
 
-    Note over Dev, SSoT: 1. Plan & Close TBD
-    Dev->>SSoT: Baca requirement, kunci spesifikasi TBD terkait
-    
-    Note over Dev, Core: 2. Headless Implementation
-    Dev->>Core: Tulis logika di `dlf-core` (Bebas dependensi Godot)
-    
-    Note over Core, Test: 3. Automated Verification
-    Core->>Test: Validasi correctness (Unit, Golden, Differential B0)
-    
-    Note over Core, UI: 4. Presentation Binding
-    Core->>UI: Hubungkan via GDExtension facade tipis (Snapshot & Command)
-    
-    Note over Dev, SSoT: 5. DoD Audit & Checkpoint
-    Dev->>SSoT: Perbarui checklist Dashboard & buat atomic git commit
+    subgraph DailyLoop ["2. DAILY LOOP (Sepanjang Milestone)"]
+        B1["Pilih 1 Task READY -> IN PROGRESS"] --> B2{"Tipe Task?"}
+        B2 -->|SPIKE| B3["Eksperimen & Catat di DECISIONS.md"]
+        B2 -->|DELIVERY| B4["Tulis Kode + Test (fmt & clippy bersih)"]
+        B3 --> B5["Tandai DONE di PROGRESS.md"]
+        B4 --> B5
+        B5 --> B6["Atomic Git Commit Semantik"]
+    end
+
+    subgraph PostSprint ["3. POST-SPRINT (30 Menit)"]
+        C1["Verifikasi Semua Task DONE (DoD Lulus)"] --> C2["Tulis Evaluasi di RETROSPECTIVE.md"]
+        C2 --> C3["Update DASHBOARD.md & README.md"]
+        C3 --> C4["Patch Proposal Markdown (jika ada sync)"]
+        C4 --> C5["Lanjut ke Pre-Sprint Milestone Berikutnya"]
+    end
+
+    PreSprint --> DailyLoop
+    DailyLoop --> PostSprint
 ```
 
 ---

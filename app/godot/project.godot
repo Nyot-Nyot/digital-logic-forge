@@ -13,6 +13,7 @@ config_version=5
 config/name="Digital Logic Forge"
 config/description="Simulator Rangkaian Logika Digital Visual dengan Compiled Execution untuk Komputer Buatan Pengguna"
 config/version="0.1.0"
+run/main_scene="uid://c6v2n7s0v0m1"
 config/features=PackedStringArray("4.7", "Forward Plus")
 
 [display]
