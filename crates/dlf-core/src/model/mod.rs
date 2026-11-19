@@ -7,8 +7,10 @@
 //! dan representasi eksekusi runtime tidak disimpan di sini, melainkan dihasilkan
 //! pada fase kompilasi frontend.
 
+pub mod circuit;
 pub mod component;
 pub mod geometry;
 pub mod id;
 pub mod pin;
+pub mod project;
 pub mod wiring;
