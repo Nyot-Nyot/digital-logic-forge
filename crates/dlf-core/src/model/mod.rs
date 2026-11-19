@@ -8,3 +8,4 @@
 //! pada fase kompilasi frontend.
 
 pub mod id;
+pub mod pin;
