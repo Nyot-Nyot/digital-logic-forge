@@ -13,4 +13,7 @@ pub mod geometry;
 pub mod id;
 pub mod pin;
 pub mod project;
+pub mod serialization;
 pub mod wiring;
+
+pub use serialization::{to_json_pretty, to_json_string};
