@@ -16,4 +16,4 @@ pub mod project;
 pub mod serialization;
 pub mod wiring;
 
-pub use serialization::{to_json_pretty, to_json_string};
+pub use serialization::{from_json_str, to_json_pretty, to_json_string};
