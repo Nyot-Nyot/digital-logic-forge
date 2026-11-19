@@ -11,3 +11,4 @@ pub mod component;
 pub mod geometry;
 pub mod id;
 pub mod pin;
+pub mod wiring;
