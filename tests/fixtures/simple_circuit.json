@@ -1,0 +1,185 @@
+{
+  "schema_version": 1,
+  "name": "Half Adder Demo",
+  "next_id": 16,
+  "root_circuit_id": 1,
+  "circuits": [
+    {
+      "id": 1,
+      "name": "main",
+      "ports": [
+        {
+          "id": 2,
+          "name": "a",
+          "direction": "Input",
+          "width": 1,
+          "position": { "x": 50.0, "y": 100.0 }
+        },
+        {
+          "id": 3,
+          "name": "b",
+          "direction": "Input",
+          "width": 1,
+          "position": { "x": 50.0, "y": 160.0 }
+        },
+        {
+          "id": 4,
+          "name": "sum",
+          "direction": "Output",
+          "width": 1,
+          "position": { "x": 400.0, "y": 100.0 }
+        },
+        {
+          "id": 5,
+          "name": "carry",
+          "direction": "Output",
+          "width": 1,
+          "position": { "x": 400.0, "y": 200.0 }
+        }
+      ],
+      "components": [
+        {
+          "id": 6,
+          "definition_id": "dlf.builtin.xor",
+          "schema_version": 1,
+          "label": "XOR1",
+          "position": { "x": 220.0, "y": 100.0 },
+          "rotation": 0,
+          "mirror_x": false,
+          "mirror_y": false,
+          "parameters": {
+            "width": 1,
+            "inputs": 2
+          },
+          "pins": [
+            {
+              "id": 7,
+              "declaration_id": "a",
+              "direction": "Input",
+              "width": 1,
+              "role": "Signal"
+            },
+            {
+              "id": 8,
+              "declaration_id": "b",
+              "direction": "Input",
+              "width": 1,
+              "role": "Signal"
+            },
+            {
+              "id": 9,
+              "declaration_id": "y",
+              "direction": "Output",
+              "width": 1,
+              "role": "Signal"
+            }
+          ]
+        },
+        {
+          "id": 10,
+          "definition_id": "dlf.builtin.and",
+          "schema_version": 1,
+          "label": "AND1",
+          "position": { "x": 220.0, "y": 200.0 },
+          "rotation": 0,
+          "mirror_x": false,
+          "mirror_y": false,
+          "parameters": {
+            "width": 1,
+            "inputs": 2
+          },
+          "pins": [
+            {
+              "id": 11,
+              "declaration_id": "a",
+              "direction": "Input",
+              "width": 1,
+              "role": "Signal"
+            },
+            {
+              "id": 12,
+              "declaration_id": "b",
+              "direction": "Input",
+              "width": 1,
+              "role": "Signal"
+            },
+            {
+              "id": 13,
+              "declaration_id": "y",
+              "direction": "Output",
+              "width": 1,
+              "role": "Signal"
+            }
+          ]
+        }
+      ],
+      "junctions": [
+        {
+          "id": 14,
+          "position": { "x": 120.0, "y": 100.0 }
+        },
+        {
+          "id": 15,
+          "position": { "x": 140.0, "y": 160.0 }
+        }
+      ],
+      "wires": [
+        {
+          "id": 101,
+          "start": { "kind": "Port", "id": 2 },
+          "end": { "kind": "Junction", "id": 14 },
+          "waypoints": []
+        },
+        {
+          "id": 102,
+          "start": { "kind": "Junction", "id": 14 },
+          "end": { "kind": "Pin", "instance_id": 6, "pin_id": 7 },
+          "waypoints": []
+        },
+        {
+          "id": 103,
+          "start": { "kind": "Junction", "id": 14 },
+          "end": { "kind": "Pin", "instance_id": 10, "pin_id": 11 },
+          "waypoints": [
+            { "x": 120.0, "y": 190.0 }
+          ]
+        },
+        {
+          "id": 104,
+          "start": { "kind": "Port", "id": 3 },
+          "end": { "kind": "Junction", "id": 15 },
+          "waypoints": []
+        },
+        {
+          "id": 105,
+          "start": { "kind": "Junction", "id": 15 },
+          "end": { "kind": "Pin", "instance_id": 6, "pin_id": 8 },
+          "waypoints": [
+            { "x": 140.0, "y": 110.0 }
+          ]
+        },
+        {
+          "id": 106,
+          "start": { "kind": "Junction", "id": 15 },
+          "end": { "kind": "Pin", "instance_id": 10, "pin_id": 12 },
+          "waypoints": [
+            { "x": 140.0, "y": 210.0 }
+          ]
+        },
+        {
+          "id": 107,
+          "start": { "kind": "Pin", "instance_id": 6, "pin_id": 9 },
+          "end": { "kind": "Port", "id": 4 },
+          "waypoints": []
+        },
+        {
+          "id": 108,
+          "start": { "kind": "Pin", "instance_id": 10, "pin_id": 13 },
+          "end": { "kind": "Port", "id": 5 },
+          "waypoints": []
+        }
+      ],
+      "tunnels": []
+    }
+  ]
+}
