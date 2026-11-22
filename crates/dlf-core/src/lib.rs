@@ -16,6 +16,9 @@ pub const CORE_VERSION: &str = env!("CARGO_PKG_VERSION");
 /// Modul model dokumen rangkaian dan entitas penyuntingan visual.
 pub mod model;
 
+/// Modul resolusi konektivitas dan pembentukan netlist kanonis.
+pub mod connectivity;
+
 /// Modul kerangka kerja diagnostik dan pelaporan error terstruktur.
 pub mod diagnostic;
 
