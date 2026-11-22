@@ -5,3 +5,4 @@
 //! menggunakan algoritma *Disjoint Set Union* (DSU) sesuai Bab 3.4.2 dan Bab 3.10.11 proposal.
 
 pub mod dsu;
+pub mod node;

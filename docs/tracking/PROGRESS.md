@@ -8,7 +8,7 @@
 
 ## 1. Task yang Sedang Berjalan (IN PROGRESS)
 
-> *Task M2.02 telah selesai. Siap melanjutkan ke Task M2.03 (Ekstraksi Node Konektivitas & Normalisasi Endpoint).*
+> *Task M2.03 telah selesai. Siap melanjutkan ke Task M2.04 (Resolusi Percabangan Junction & Segment Merging).*
 
 ---
 
@@ -18,9 +18,9 @@
 | :---: | :---: | :--- | :---: | :---: |
 | **M2.01** | **SPIKE** | **Riset & Desain Topologi Net, DSU, dan Ketergantungan Graf**<br/>• *DoD:* Spesifikasi struktur `NetId`, data graph topologi endpoint, strategi DSU deterministik kanonis, penanganan SCC Tarjan, dan keputusan dicatat di `docs/decisions/DECISIONS.md`. | *None* | **DONE** ✅ |
 | **M2.02** | **DELIVERY** | **Implementasi Disjoint Set Union (DSU) Deterministik**<br/>• *DoD:* Modul `crates/dlf-core/src/connectivity/dsu.rs` dengan struct `DisjointSet`, path compression & union-by-rank, penentuan root kanonis berbasis ID minimum untuk determinisme, unit test lulus. | M2.01 | **DONE** ✅ |
-| **M2.03** | **DELIVERY** | **Ekstraksi Node Konektivitas & Normalisasi Endpoint**<br/>• *DoD:* Modul `crates/dlf-core/src/connectivity/node.rs` dengan `ConnectionNode` (Pin, Port, Junction, Tunnel), parser yang memetakan seluruh kawat (`WireSegment`) ke node-node konektivitas, unit test ekstraksi lulus. | M2.02 | **READY** 🚀 |
-| **M2.04** | **DELIVERY** | **Resolusi Percabangan Junction & Segment Merging**<br/>• *DoD:* Implementasi aturan konektivitas visual Bab 3.4.2 (kawat menempel ke pin, port, junction), penggabungan segmen kawat yang bertemu pada junction via DSU, unit test topologi branching lulus. | M2.03 | *BLOCKED* |
-| **M2.05** | **DELIVERY** | **Resolusi Tunnel Nirkabel (Local & Global Scopes)**<br/>• *DoD:* Penyatuan node tunnel yang memiliki nama label sama dalam satu sirkuit/scope ke net yang sama via DSU, deteksi dan laporan `CONN-TUNNEL-UNPAIRED` bila ada tunnel tanpa pasangan, unit test lulus. | M2.03 | *BLOCKED* |
+| **M2.03** | **DELIVERY** | **Ekstraksi Node Konektivitas & Normalisasi Endpoint**<br/>• *DoD:* Modul `crates/dlf-core/src/connectivity/node.rs` dengan `ConnectionNode` (Pin, Port, Junction, Tunnel), parser yang memetakan seluruh kawat (`WireSegment`) ke node-node konektivitas, unit test ekstraksi lulus. | M2.02 | **DONE** ✅ |
+| **M2.04** | **DELIVERY** | **Resolusi Percabangan Junction & Segment Merging**<br/>• *DoD:* Implementasi aturan konektivitas visual Bab 3.4.2 (kawat menempel ke pin, port, junction), penggabungan segmen kawat yang bertemu pada junction via DSU, unit test topologi branching lulus. | M2.03 | **READY** 🚀 |
+| **M2.05** | **DELIVERY** | **Resolusi Tunnel Nirkabel (Local & Global Scopes)**<br/>• *DoD:* Penyatuan node tunnel yang memiliki nama label sama dalam satu sirkuit/scope ke net yang sama via DSU, deteksi dan laporan `CONN-TUNNEL-UNPAIRED` bila ada tunnel tanpa pasangan, unit test lulus. | M2.03 | **READY** 🚀 |
 | **M2.06** | **DELIVERY** | **Konstruksi Netlist Kanonis & Model Net**<br/>• *DoD:* Struct `Net` (NetId kanonis, daftar pin driver, daftar pin load, lebar bit) dan `Netlist`, transformasi hasil partisi DSU menjadi netlist terstruktur, unit test konstruksi netlist lulus. | M2.04, M2.05 | *BLOCKED* |
 | **M2.07** | **DELIVERY** | **Validasi Elektris Net: Multi-Driver Check (`NET-MULTI-DRIVER`)**<br/>• *DoD:* Aturan validasi net untuk mendeteksi lebih dari satu driver aktif pada net yang tidak diresolusi (dua output pin berkonflik), menghasilkan error `NET-MULTI-DRIVER` dengan daftar driver terkait, unit test lulus. | M2.06 | *BLOCKED* |
 | **M2.08** | **DELIVERY** | **Validasi Elektris Net: Undriven Net Check (`NET-UNDRIVEN`)**<br/>• *DoD:* Aturan validasi net mendeteksi net yang memiliki beban (input pin) tetapi tidak memiliki penggerak (output pin/port), menghasilkan warning/error `NET-UNDRIVEN`, unit test lulus. | M2.06 | *BLOCKED* |
@@ -34,5 +34,5 @@
 
 ## 3. Ringkasan Status Task M2
 - **Total Task:** 13 Task (1 SPIKE, 12 DELIVERY)
-- **Status:** 1 READY, 10 BLOCKED, 0 IN PROGRESS, 2 DONE
-- **Progress:** `2 / 13` (15.4%)
+- **Status:** 2 READY, 8 BLOCKED, 0 IN PROGRESS, 3 DONE
+- **Progress:** `3 / 13` (23.1%)
