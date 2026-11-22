@@ -6,3 +6,6 @@
 
 pub mod dsu;
 pub mod node;
+pub mod resolver;
+
+pub use resolver::resolve_circuit_connectivity;
