@@ -7,6 +7,7 @@
 use super::dsu::DisjointSet;
 use super::node::ConnectionNode;
 use super::resolver::resolve_circuit_connectivity;
+use crate::diagnostic::SourceRef;
 use crate::model::circuit::CircuitDefinition;
 use crate::model::id::{InstanceId, PinId};
 use crate::model::pin::{PinDirection, SignalWidth};
@@ -69,6 +70,10 @@ impl NetTerminal {
     ///
     /// Mengembalikan `Some(NetTerminal)` jika simpul adalah Pin atau Port,
     /// atau `None` jika simpul adalah Junction atau Tunnel.
+    /// Mencoba mengonversi `ConnectionNode` menjadi `NetTerminal`.
+    ///
+    /// Mengembalikan `Some(NetTerminal)` jika simpul adalah Pin atau Port,
+    /// atau `None` jika simpul adalah Junction atau Tunnel.
     pub fn from_node(node: ConnectionNode) -> Option<Self> {
         match node {
             ConnectionNode::Pin {
@@ -80,6 +85,21 @@ impl NetTerminal {
             }),
             ConnectionNode::Port { id } => Some(Self::Port { id }),
             ConnectionNode::Junction { .. } | ConnectionNode::Tunnel { .. } => None,
+        }
+    }
+
+    /// Mengonversi terminal fungsional menjadi referensi visual `SourceRef`.
+    #[inline]
+    pub const fn to_source_ref(&self) -> SourceRef {
+        match *self {
+            Self::Pin {
+                instance_id,
+                pin_id,
+            } => SourceRef::Pin {
+                instance_id,
+                pin_id,
+            },
+            Self::Port { id } => SourceRef::Port { id },
         }
     }
 }

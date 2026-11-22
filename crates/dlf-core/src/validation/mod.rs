@@ -3,7 +3,11 @@
 //! Modul ini mengimplementasikan aturan validasi integritas dokumen rangkaian (*structural validation*)
 //! sebelum sirkuit dikompilasi atau disimulasikan sesuai Bab 3.4.2 dan Bab 3.10.8 proposal.
 
+pub mod electrical;
 pub mod structural;
+
+pub use electrical::{validate_multi_drivers, validate_netlist_electrical, validate_undriven_nets};
+pub use structural::{validate_circuit, validate_project};
 
 use crate::diagnostic::{Diagnostic, Severity};
 
