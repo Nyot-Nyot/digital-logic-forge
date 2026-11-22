@@ -7,5 +7,7 @@
 pub mod dsu;
 pub mod node;
 pub mod resolver;
+pub mod tunnel;
 
-pub use resolver::resolve_circuit_connectivity;
+pub use resolver::{resolve_circuit_connectivity, resolve_circuit_connectivity_with_report};
+pub use tunnel::resolve_circuit_tunnels;

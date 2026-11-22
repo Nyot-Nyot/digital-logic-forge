@@ -22,4 +22,5 @@ Desktop.ini
 
 # Temporary / Scratch
 scratch/
+temp/
 *.tmp

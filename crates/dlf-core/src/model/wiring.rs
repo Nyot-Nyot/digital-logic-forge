@@ -116,7 +116,9 @@ impl Junction {
 }
 
 /// Cakupan visibilitas koneksi nirkabel untuk entitas `Tunnel`.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Default, Serialize, Deserialize)]
+#[derive(
+    Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default, Serialize, Deserialize,
+)]
 pub enum TunnelScope {
     /// Hanya menghubungkan tunnel bernama sama di dalam sirkuit yang sama (*circuit-local*).
     #[default]

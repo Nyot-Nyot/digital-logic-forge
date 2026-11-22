@@ -7,13 +7,24 @@
 
 use super::dsu::DisjointSet;
 use super::node::{ConnectionNode, extract_circuit_nodes, extract_wire_connections};
+use super::tunnel::resolve_circuit_tunnels;
 use crate::model::circuit::CircuitDefinition;
+use crate::validation::ValidationReport;
 
 /// Membangun partisi konektivitas topologis lembar sirkuit menggunakan algoritma DSU.
 ///
 /// Seluruh node (Pin, Port, Junction, Tunnel) didaftarkan dan digabungkan berdasarkan
-/// segmen-segmen kawat yang menghubungkannya.
+/// segmen-segmen kawat yang menghubungkannya serta pasangan tunnel bernama identik.
 pub fn resolve_circuit_connectivity(circuit: &CircuitDefinition) -> DisjointSet<ConnectionNode> {
+    let mut report = ValidationReport::new();
+    resolve_circuit_connectivity_with_report(circuit, &mut report)
+}
+
+/// Membangun partisi konektivitas topologis lembar sirkuit dan mengumpulkan diagnostik konektivitas.
+pub fn resolve_circuit_connectivity_with_report(
+    circuit: &CircuitDefinition,
+    report: &mut ValidationReport,
+) -> DisjointSet<ConnectionNode> {
     let mut dsu = DisjointSet::new();
 
     // 1. Daftarkan seluruh simpul yang ada di sirkuit
@@ -25,6 +36,9 @@ pub fn resolve_circuit_connectivity(circuit: &CircuitDefinition) -> DisjointSet<
     for (node_a, node_b) in extract_wire_connections(circuit) {
         dsu.union(node_a, node_b);
     }
+
+    // 3. Resolusi pasangan tunnel nirkabel
+    resolve_circuit_tunnels(circuit, &mut dsu, report);
 
     dsu
 }
