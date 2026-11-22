@@ -197,4 +197,110 @@ mod tests {
 
         assert_eq!(report.error_count(), 0);
     }
+
+    #[test]
+    fn test_undriven_net_detection() {
+        let mut circuit = CircuitDefinition::new(CircuitId::new(1), "Undriven Test");
+        let registry = ComponentRegistry::with_builtins();
+
+        // 2 buah gerbang NOT
+        let not_def = registry.get("dlf.builtin.not").expect("not definition");
+        let comp1 = not_def
+            .instantiate(
+                InstanceId::new(10),
+                &[PinId::new(11), PinId::new(12)], // 11: in, 12: out
+                Point::new(0.0, 0.0),
+            )
+            .unwrap();
+        let comp2 = not_def
+            .instantiate(
+                InstanceId::new(20),
+                &[PinId::new(21), PinId::new(22)], // 21: in, 22: out
+                Point::new(100.0, 0.0),
+            )
+            .unwrap();
+
+        circuit.add_component(comp1);
+        circuit.add_component(comp2);
+
+        // Kawat menghubungkan input comp1 (11) langsung ke input comp2 (21)
+        // Net ini memiliki 2 load dan 0 driver!
+        circuit.add_wire(WireSegment::new(
+            WireId::new(100),
+            Endpoint::Pin {
+                instance_id: InstanceId::new(10),
+                pin_id: PinId::new(11),
+            },
+            Endpoint::Pin {
+                instance_id: InstanceId::new(20),
+                pin_id: PinId::new(21),
+            },
+        ));
+
+        let netlist = Netlist::from_circuit(&circuit);
+        let mut report = ValidationReport::new();
+        validate_undriven_nets(&netlist, &mut report);
+
+        // Harusnya mendeteksi net input (11 & 21) sebagai undriven.
+        // Output pins 12 dan 22 berdiri sendiri (has driver, 0 loads), jadi bukan undriven.
+        assert_eq!(report.error_count(), 1);
+        let diag = &report.diagnostics[0];
+        assert_eq!(diag.code, DiagnosticCode::NetUndriven);
+        assert_eq!(
+            diag.primary,
+            SourceRef::Pin {
+                instance_id: InstanceId::new(10),
+                pin_id: PinId::new(11),
+            }
+        );
+        assert_eq!(diag.related.len(), 1);
+        assert_eq!(
+            diag.related[0],
+            SourceRef::Pin {
+                instance_id: InstanceId::new(20),
+                pin_id: PinId::new(21),
+            }
+        );
+    }
+
+    #[test]
+    fn test_valid_circuit_has_no_undriven_net() {
+        let mut circuit = CircuitDefinition::new(CircuitId::new(1), "Fully Driven Test");
+        let registry = ComponentRegistry::with_builtins();
+
+        // 1 port input dan 1 gerbang NOT
+        circuit.add_port(PortDefinition::new(
+            PinId::new(1),
+            "in",
+            PinDirection::Input,
+            SignalWidth::SINGLE,
+            Point::new(0.0, 0.0),
+        ));
+
+        let not_def = registry.get("dlf.builtin.not").expect("not definition");
+        let comp = not_def
+            .instantiate(
+                InstanceId::new(10),
+                &[PinId::new(11), PinId::new(12)],
+                Point::new(50.0, 0.0),
+            )
+            .unwrap();
+        circuit.add_component(comp);
+
+        // Kawat dari Port input (1) ke pin in gerbang NOT (11)
+        circuit.add_wire(WireSegment::new(
+            WireId::new(100),
+            Endpoint::Port { id: PinId::new(1) },
+            Endpoint::Pin {
+                instance_id: InstanceId::new(10),
+                pin_id: PinId::new(11),
+            },
+        ));
+
+        let netlist = Netlist::from_circuit(&circuit);
+        let mut report = ValidationReport::new();
+        validate_undriven_nets(&netlist, &mut report);
+
+        assert_eq!(report.error_count(), 0);
+    }
 }

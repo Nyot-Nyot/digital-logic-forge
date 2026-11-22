@@ -8,9 +8,9 @@
 
 ## 1. Task yang Sedang Berjalan (IN PROGRESS)
 
-- [ ] **M2.08 [DELIVERY]** — **Validasi Elektris Net: Undriven Net Check (`NET-UNDRIVEN`)**  
-  *Deskripsi:* Lengkapi aturan validasi semantik pada `crates/dlf-core/src/validation/electrical.rs` untuk memeriksa setiap net yang memiliki beban (input pin komponen atau output port antarmuka sirkuit) tetapi tidak memiliki penggerak (output pin komponen atau input port antarmuka). Menerbitkan error diagnostik `NET-UNDRIVEN` yang memuat lokasi visual pin beban yang menggantung.  
-  *DoD:* Deteksi net tanpa driver, penerbitan error `DiagnosticCode::NetUndriven` dengan penandaan visual terminal beban terkait, unit test validasi undriven net lulus.
+- [ ] **M2.09 [DELIVERY]** — **Konstruksi Graf Ketergantungan Kombinasional**  
+  *Deskripsi:* Buat modul `crates/dlf-core/src/analysis/graph.rs` yang mengonstruksi struct `DependencyGraph` berbasis simpul operasi komponen (`InstanceId`) dan sisi terarah sinyal dari driver ke load pin, memotong ketergantungan kombinasional pada batas sekuensial (register DFF).  
+  *DoD:* Struct `DependencyGraph`, konstruktor dari `CircuitDefinition` + `Netlist`, pemisahan pin DFF input `d` (load) vs output `q` (driver siklus berikutnya), unit test konstruksi graf ketergantungan lulus.
 
 ---
 
@@ -25,8 +25,8 @@
 | **M2.05** | **DELIVERY** | **Resolusi Tunnel Nirkabel (Local & Global Scopes)**<br/>• *DoD:* Penyatuan node tunnel yang memiliki nama label sama dalam satu sirkuit/scope ke net yang sama via DSU, deteksi dan laporan `CONN-TUNNEL-UNPAIRED` bila ada tunnel tanpa pasangan, unit test lulus. | M2.03 | **DONE** ✅ |
 | **M2.06** | **DELIVERY** | **Konstruksi Netlist Kanonis & Model Net**<br/>• *DoD:* Struct `Net` (NetId kanonis, daftar pin driver, daftar pin load, lebar bit) dan `Netlist`, transformasi hasil partisi DSU menjadi netlist terstruktur, unit test konstruksi netlist lulus. | M2.04, M2.05 | **DONE** ✅ |
 | **M2.07** | **DELIVERY** | **Validasi Elektris Net: Multi-Driver Check (`NET-MULTI-DRIVER`)**<br/>• *DoD:* Aturan validasi net untuk mendeteksi lebih dari satu driver aktif pada net yang tidak diresolusi (dua output pin berkonflik), menghasilkan error `NET-MULTI-DRIVER` dengan daftar driver terkait, unit test lulus. | M2.06 | **DONE** ✅ |
-| **M2.08** | **DELIVERY** | **Validasi Elektris Net: Undriven Net Check (`NET-UNDRIVEN`)**<br/>• *DoD:* Aturan validasi net mendeteksi net yang memiliki beban (input pin) tetapi tidak memiliki penggerak (output pin/port), menghasilkan warning/error `NET-UNDRIVEN`, unit test lulus. | M2.06 | **IN PROGRESS** ⏳ |
-| **M2.09** | **DELIVERY** | **Konstruksi Graf Ketergantungan Kombinasional**<br/>• *DoD:* Modul `crates/dlf-core/src/analysis/graph.rs` dengan struct `DependencyGraph`, simpul operasi dan sisi aliran sinyal driver-ke-load, pemutusan siklus kombinasional pada register (DFF), unit test graf lulus. | M2.06 | **READY** 🚀 |
+| **M2.08** | **DELIVERY** | **Validasi Elektris Net: Undriven Net Check (`NET-UNDRIVEN`)**<br/>• *DoD:* Aturan validasi net mendeteksi net yang memiliki beban (input pin) tetapi tidak memiliki penggerak (output pin/port), menghasilkan warning/error `NET-UNDRIVEN`, unit test lulus. | M2.06 | **DONE** ✅ |
+| **M2.09** | **DELIVERY** | **Konstruksi Graf Ketergantungan Kombinasional**<br/>• *DoD:* Modul `crates/dlf-core/src/analysis/graph.rs` dengan struct `DependencyGraph`, simpul operasi dan sisi aliran sinyal driver-ke-load, pemutusan siklus kombinasional pada register (DFF), unit test graf lulus. | M2.06 | **IN PROGRESS** ⏳ |
 | **M2.10** | **DELIVERY** | **Deteksi Siklus & Analisis SCC (Tarjan Algorithm)**<br/>• *DoD:* Modul `crates/dlf-core/src/analysis/scc.rs` dengan algoritma Tarjan untuk mendeteksi Strongly Connected Components, pemisahan wilayah asiklik (DAG) dari siklik (feedback), pelaporan diagnostik `DEP-SCC-OSCILLATION`, unit test lulus. | M2.09 | *BLOCKED* |
 | **M2.11** | **DELIVERY** | **Levelization & Topological Sorting Kombinasional**<br/>• *DoD:* Modul `crates/dlf-core/src/analysis/levelize.rs` untuk menghitung kedalaman level ketergantungan (level = 1 + max(level sumber)), pengurutan deterministik berurutan level dan ID stabil, unit test levelization lulus. | M2.10 | *BLOCKED* |
 | **M2.12** | **DELIVERY** | **Elaborasi Hierarki Sub-Sirkuit Dasar (Target P1)**<br/>• *DoD:* Modul `crates/dlf-core/src/analysis/hierarchy.rs` untuk ekspansi sub-sirkuit chip kustom, port-to-pin binding, deteksi siklus instansiasi rekursif `HIER-RECURSION`, unit test elaborasi lulus. | M2.06 | **READY** 🚀 |
@@ -36,5 +36,5 @@
 
 ## 3. Ringkasan Status Task M2
 - **Total Task:** 13 Task (1 SPIKE, 12 DELIVERY)
-- **Status:** 2 READY, 3 BLOCKED, 1 IN PROGRESS, 7 DONE
-- **Progress:** `7 / 13` (53.8%)
+- **Status:** 1 READY, 3 BLOCKED, 1 IN PROGRESS, 8 DONE
+- **Progress:** `8 / 13` (61.5%)
