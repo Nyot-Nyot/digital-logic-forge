@@ -61,3 +61,32 @@ Dokumen ini mencatat seluruh keputusan teknis arsitektur, hasil eksperimen (*SPI
 - **Konsekuensi & Dampak:**
   - Menjamin kompatibilitas serialisasi *round-trip* deterministik (KF-01).
   - Skema dokumen siap dipakai oleh modul Rust `model` (`Project`, `CircuitDefinition`, dll.) pada task M1.02–M1.08.
+
+### [SPIKE-003] Arsitektur Resolusi Netlist Kanonis (DSU), Validasi Multi-Driver, dan Analisis Ketergantungan (Tarjan SCC & Levelization)
+- **Tanggal:** 2026-11-22
+- **Milestone:** M2 (Connectivity & Semantic Frontend)
+- **Konteks:** Menentukan strategi perancangan frontend kompilasi untuk mentransformasikan dokumen pengeditan grafis menjadi netlist elektris yang deterministik, mendeteksi pelanggaran elektris, serta membentuk graf dependensi dan urutan eksekusi kombinasional (*levelization*) sesuai Bab 3.4.1, 3.4.2, dan 3.10.11 proposal.
+- **Opsi yang Dieksplorasi:**
+  1. *Adjacency List BFS/DFS Traversal langsung pada Canvas*: Bergantung pada urutan array kawat di memori; urutan traversal mudah berubah jika kawat dihapus/ditambah ulang, menghasilkan Net ID yang tidak deterministik.
+  2. *Disjoint Set Union (DSU) dengan Root Minimum ID Kanonis*: Mengelompokkan seluruh endpoint terhubung ke dalam himpunan saling lepas (*equivalence classes*). Root kanonis selalu memilih ID objek terkecil di dalam himpunan. Kompleksitas amortisasi $O(\alpha(N))$ mendekati linier, deterministik 100%.
+  3. *Deteksi Siklus via DFS Sederhana vs Tarjan SCC*: DFS biasa hanya mendeteksi "ada siklus atau tidak", tetapi tidak dapat mengisolasi komponen terhubung kuat (*Strongly Connected Components*) untuk dievaluasi secara iteratif atau dikondensasi menjadi DAG. Algoritma Tarjan SCC menemukan seluruh komponen siklus tertutup dalam satu lintasan linier $O(V + E)$.
+- **Keputusan Terpilih:**
+  1. **Identitas Net Kanonis (`NetId`):** `NetId(pub u64)` berbasis newtype, bernilai ID minimum dari anggota node di dalam himpunan partisi DSU (misal ID Pin terkecil atau Port terkecil). Menjamin dokumen identik selalu menghasilkan `NetId` yang persis sama (KNF-01).
+  2. **Model Node Konektivitas (`ConnectionNode`):** Abstraksi terpadu yang memetakan terminal `Pin { instance_id, pin_id }`, `Port(PinId)`, `Junction(JunctionId)`, dan `Tunnel(TunnelId)`.
+  3. **DSU Deterministik:** Struktur data `DisjointSet` mengimplementasikan *path compression* dan *canonical tracking*: operasi `union` selalu menetapkan elemen bernilai ID terkecil sebagai representatif kanonis himpunan.
+  4. **Resolusi Tunnel:** Seluruh node tunnel dalam sirkuit yang sama dengan nama label yang identik disatukan ke dalam partisi net yang sama. Tunnel tunggal tanpa pasangan dalam cakupan sirkuit dilaporkan dengan `CONN-TUNNEL-UNPAIRED`.
+  5. **Netlist & Validasi Elektris:**
+     - Struktur `Net` memisahkan secara tegas antara `drivers` (pin/port keluaran) dan `loads` (pin/port masukan) serta mencatat `width: SignalWidth`.
+     - Validasi Multi-Driver: Jika sebuah net memiliki `drivers.len() > 1` (dua atau lebih output berkonflik tanpa tri-state/resolusi), validator menerbitkan error `NET-MULTI-DRIVER`.
+     - Validasi Undriven: Jika sebuah net memiliki `drivers.is_empty()` namun memiliki `loads.len() > 0`, validator menerbitkan error `NET-UNDRIVEN`.
+  6. **Graf Ketergantungan Kombinasional (`DependencyGraph`):**
+     - Simpul berupa komponen sirkuit (`InstanceId`).
+     - Sisi terarah mengalir dari komponen driver net ke komponen load net.
+     - Komponen sekuensial (DFF): pin input `d` adalah load pada siklus $t$, sedangkan pin output `q` adalah driver pada siklus $t+1$ (level 0), sehingga memutus siklus kombinasional antar-siklus.
+  7. **Tarjan SCC & Levelization:**
+     - Menggunakan algoritma Tarjan untuk mendeteksi siklus ketergantungan.
+     - Setiap SCC dengan jumlah simpul > 1 (atau self-loop) ditandai sebagai wilayah umpan balik (*feedback loop*). Rangkaian tanpa umpan balik kombinasional diverifikasi memiliki seluruh SCC berukuran 1 (DAG murni).
+     - Untuk rangkaian asiklik (DAG), dihitung kedalaman level topological: $\text{level}(u) = 1 + \max_{(v \to u)} \text{level}(v)$. Komponen diurutkan per level, dan di dalam level yang sama diurutkan secara deterministik berdasarkan `InstanceId`.
+- **Konsekuensi & Dampak:**
+  - Netlist kanonis dan urutan levelization siap dikonsumsi langsung oleh Milestone M3 (*First Compiled Simulation*) untuk IR Lowering dan alokasi layout memori simulasi.
+  - Memenuhi jaminan kebenaran determinisme (KNF-01) dan keterlacakan diagnostik visual (KNF-03).

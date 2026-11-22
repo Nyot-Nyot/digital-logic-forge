@@ -8,7 +8,7 @@
 
 ## 1. Task yang Sedang Berjalan (IN PROGRESS)
 
-> *Pre-Sprint M2 selesai didekomposisi. Siap mengambil Task M2.01 (SPIKE).*
+> *Task M2.01 (SPIKE) telah selesai. Siap melanjutkan ke Task M2.02 (Implementasi Disjoint Set Union Deterministik).*
 
 ---
 
@@ -16,8 +16,8 @@
 
 | ID | Tipe | Deskripsi Task & Definition of Done (DoD) | Dependensi | Status |
 | :---: | :---: | :--- | :---: | :---: |
-| **M2.01** | **SPIKE** | **Riset & Desain Topologi Net, DSU, dan Ketergantungan Graf**<br/>• *DoD:* Spesifikasi struktur `NetId`, data graph topologi endpoint, strategi DSU deterministik kanonis, penanganan SCC Tarjan, dan keputusan dicatat di `docs/decisions/DECISIONS.md`. | *None* | **READY** 🚀 |
-| **M2.02** | **DELIVERY** | **Implementasi Disjoint Set Union (DSU) Deterministik**<br/>• *DoD:* Modul `crates/dlf-core/src/connectivity/dsu.rs` dengan struct `DisjointSet`, path compression & union-by-rank, penentuan root kanonis berbasis ID minimum untuk determinisme, unit test lulus. | M2.01 | *BLOCKED* |
+| **M2.01** | **SPIKE** | **Riset & Desain Topologi Net, DSU, dan Ketergantungan Graf**<br/>• *DoD:* Spesifikasi struktur `NetId`, data graph topologi endpoint, strategi DSU deterministik kanonis, penanganan SCC Tarjan, dan keputusan dicatat di `docs/decisions/DECISIONS.md`. | *None* | **DONE** ✅ |
+| **M2.02** | **DELIVERY** | **Implementasi Disjoint Set Union (DSU) Deterministik**<br/>• *DoD:* Modul `crates/dlf-core/src/connectivity/dsu.rs` dengan struct `DisjointSet`, path compression & union-by-rank, penentuan root kanonis berbasis ID minimum untuk determinisme, unit test lulus. | M2.01 | **READY** 🚀 |
 | **M2.03** | **DELIVERY** | **Ekstraksi Node Konektivitas & Normalisasi Endpoint**<br/>• *DoD:* Modul `crates/dlf-core/src/connectivity/node.rs` dengan `ConnectionNode` (Pin, Port, Junction, Tunnel), parser yang memetakan seluruh kawat (`WireSegment`) ke node-node konektivitas, unit test ekstraksi lulus. | M2.02 | *BLOCKED* |
 | **M2.04** | **DELIVERY** | **Resolusi Percabangan Junction & Segment Merging**<br/>• *DoD:* Implementasi aturan konektivitas visual Bab 3.4.2 (kawat menempel ke pin, port, junction), penggabungan segmen kawat yang bertemu pada junction via DSU, unit test topologi branching lulus. | M2.03 | *BLOCKED* |
 | **M2.05** | **DELIVERY** | **Resolusi Tunnel Nirkabel (Local & Global Scopes)**<br/>• *DoD:* Penyatuan node tunnel yang memiliki nama label sama dalam satu sirkuit/scope ke net yang sama via DSU, deteksi dan laporan `CONN-TUNNEL-UNPAIRED` bila ada tunnel tanpa pasangan, unit test lulus. | M2.03 | *BLOCKED* |
@@ -34,5 +34,5 @@
 
 ## 3. Ringkasan Status Task M2
 - **Total Task:** 13 Task (1 SPIKE, 12 DELIVERY)
-- **Status:** 1 READY, 12 BLOCKED, 0 IN PROGRESS, 0 DONE
-- **Progress:** `0 / 13` (0.0%)
+- **Status:** 1 READY, 11 BLOCKED, 0 IN PROGRESS, 1 DONE
+- **Progress:** `1 / 13` (7.7%)
