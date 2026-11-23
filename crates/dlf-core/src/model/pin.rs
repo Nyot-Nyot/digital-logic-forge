@@ -94,6 +94,20 @@ pub enum PinDirection {
     Inout,
 }
 
+impl PinDirection {
+    /// Memeriksa apakah arah pin merupakan masukan (`Input` atau `Inout`).
+    #[inline]
+    pub const fn is_input(self) -> bool {
+        matches!(self, Self::Input | Self::Inout)
+    }
+
+    /// Memeriksa apakah arah pin merupakan keluaran (`Output` atau `Inout`).
+    #[inline]
+    pub const fn is_output(self) -> bool {
+        matches!(self, Self::Output | Self::Inout)
+    }
+}
+
 impl Display for PinDirection {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         match self {

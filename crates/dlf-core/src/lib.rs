@@ -25,6 +25,9 @@ pub mod diagnostic;
 /// Modul validasi aturan struktural dokumen rangkaian.
 pub mod validation;
 
+/// Modul analisis semantik, graf ketergantungan, dan penjadwalan eksekusi.
+pub mod analysis;
+
 /// Modul worker simulasi latar belakang dan protokol snapshot.
 pub mod worker;
 
