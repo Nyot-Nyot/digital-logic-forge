@@ -24,6 +24,11 @@ pub fn resolve_circuit_tunnels(
         BTreeMap::new();
 
     for tunnel in &circuit.tunnels {
+        let tun_node = ConnectionNode::Tunnel { id: tunnel.id };
+        let pin_node = ConnectionNode::Port { id: tunnel.pin_id };
+        dsu.insert(pin_node);
+        dsu.union(tun_node, pin_node);
+
         groups
             .entry((tunnel.name.clone(), tunnel.scope))
             .or_default()

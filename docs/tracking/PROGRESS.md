@@ -8,9 +8,7 @@
 
 ## 1. Task yang Sedang Berjalan (IN PROGRESS)
 
-- [ ] **M2.13 [DELIVERY]** — **End-to-End M2 Connectivity & Semantic Test Suite**  
-  *Deskripsi:* Buat rangkaian tes integrasi komprehensif pada `crates/dlf-core/tests/connectivity_test.rs` yang menguji alur lengkap: Circuit Definition → Connectivity Extraction → DSU Canonical Netlist → Electrical Validation (Multi-driver & Undriven) → Dependency Graph → Tarjan SCC → Topological Levelization → Hierarchy Elaboration. Pastikan seluruh automated test runner (`scripts/check.ps1` dan `scripts/test.ps1`) lulus 100%.  
-  *DoD:* File integrasi `crates/dlf-core/tests/connectivity_test.rs` lulus pengujian berbagai topologi rangkaian, `scripts/check.ps1` dan `scripts/test.ps1` lulus 100% tanpa peringatan.
+*Tidak ada task yang sedang berjalan (Seluruh 13 task Milestone M2 telah selesai 100% dan terverifikasi).*
 
 ---
 
@@ -30,11 +28,11 @@
 | **M2.10** | **DELIVERY** | **Deteksi Siklus & Analisis SCC (Tarjan Algorithm)**<br/>• *DoD:* Modul `crates/dlf-core/src/analysis/scc.rs` dengan algoritma Tarjan untuk mendeteksi Strongly Connected Components, pemisahan wilayah asiklik (DAG) dari siklik (feedback), pelaporan diagnostik `DEP-SCC-OSCILLATION`, unit test lulus. | M2.09 | **DONE** ✅ |
 | **M2.11** | **DELIVERY** | **Levelization & Topological Sorting Kombinasional**<br/>• *DoD:* Modul `crates/dlf-core/src/analysis/levelize.rs` untuk menghitung kedalaman level ketergantungan (level = 1 + max(level sumber)), pengurutan deterministik berurutan level dan ID stabil, unit test levelization lulus. | M2.10 | **DONE** ✅ |
 | **M2.12** | **DELIVERY** | **Elaborasi Hierarki Sub-Sirkuit Dasar (Target P1)**<br/>• *DoD:* Modul `crates/dlf-core/src/analysis/hierarchy.rs` untuk ekspansi sub-sirkuit chip kustom, port-to-pin binding, deteksi siklus instansiasi rekursif `HIER-RECURSION`, unit test elaborasi lulus. | M2.06 | **DONE** ✅ |
-| **M2.13** | **DELIVERY** | **End-to-End M2 Connectivity & Semantic Test Suite**<br/>• *DoD:* Rangkaian integration test komprehensif pada `crates/dlf-core/tests/connectivity_test.rs` dengan aneka variasi sirkuit, seluruh automated tests (`scripts/check.ps1` dan `scripts/test.ps1`) lulus 100%. | M2.07, M2.08, M2.11, M2.12 | **IN PROGRESS** ⏳ |
+| **M2.13** | **DELIVERY** | **End-to-End M2 Connectivity & Semantic Test Suite**<br/>• *DoD:* Rangkaian integration test komprehensif pada `crates/dlf-core/tests/connectivity_test.rs` dengan aneka variasi sirkuit, seluruh automated tests (`scripts/check.ps1` dan `scripts/test.ps1`) lulus 100%. | M2.07, M2.08, M2.11, M2.12 | **DONE** ✅ |
 
 ---
 
 ## 3. Ringkasan Status Task M2
 - **Total Task:** 13 Task (1 SPIKE, 12 DELIVERY)
-- **Status:** 0 READY, 0 BLOCKED, 1 IN PROGRESS, 12 DONE
-- **Progress:** `12 / 13` (92.3%)
+- **Status:** 0 READY, 0 BLOCKED, 0 IN PROGRESS, 13 DONE
+- **Progress:** `13 / 13` (100.0%) 🎉
