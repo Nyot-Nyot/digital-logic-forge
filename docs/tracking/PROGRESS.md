@@ -8,9 +8,9 @@
 
 ## 1. Task yang Sedang Berjalan (IN PROGRESS)
 
-- [ ] **M2.12 [DELIVERY]** — **Elaborasi Hierarki Sub-Sirkuit Dasar (Target P1)**  
-  *Deskripsi:* Buat modul `crates/dlf-core/src/analysis/hierarchy.rs` untuk memeriksa hierarki sub-sirkuit kustom, pemetaan port antarmuka sirkuit anak ke pin instance sirkuit induk (*port-to-pin binding*), serta pencegahan rekursi tak berhingga (*infinite instantiation recursion*) dengan menerbitkan diagnostik `HIER-RECURSION`.  
-  *DoD:* Struktur pendeteksi siklus dependensi sub-sirkuit, pemetaan port-to-pin, pelaporan diagnostik `DiagnosticCode::HierRecursion`, unit test elaborasi hierarki lulus.
+- [ ] **M2.13 [DELIVERY]** — **End-to-End M2 Connectivity & Semantic Test Suite**  
+  *Deskripsi:* Buat rangkaian tes integrasi komprehensif pada `crates/dlf-core/tests/connectivity_test.rs` yang menguji alur lengkap: Circuit Definition → Connectivity Extraction → DSU Canonical Netlist → Electrical Validation (Multi-driver & Undriven) → Dependency Graph → Tarjan SCC → Topological Levelization → Hierarchy Elaboration. Pastikan seluruh automated test runner (`scripts/check.ps1` dan `scripts/test.ps1`) lulus 100%.  
+  *DoD:* File integrasi `crates/dlf-core/tests/connectivity_test.rs` lulus pengujian berbagai topologi rangkaian, `scripts/check.ps1` dan `scripts/test.ps1` lulus 100% tanpa peringatan.
 
 ---
 
@@ -29,12 +29,12 @@
 | **M2.09** | **DELIVERY** | **Konstruksi Graf Ketergantungan Kombinasional**<br/>• *DoD:* Modul `crates/dlf-core/src/analysis/graph.rs` dengan struct `DependencyGraph`, simpul operasi dan sisi aliran sinyal driver-ke-load, pemutusan siklus kombinasional pada register (DFF), unit test graf lulus. | M2.06 | **DONE** ✅ |
 | **M2.10** | **DELIVERY** | **Deteksi Siklus & Analisis SCC (Tarjan Algorithm)**<br/>• *DoD:* Modul `crates/dlf-core/src/analysis/scc.rs` dengan algoritma Tarjan untuk mendeteksi Strongly Connected Components, pemisahan wilayah asiklik (DAG) dari siklik (feedback), pelaporan diagnostik `DEP-SCC-OSCILLATION`, unit test lulus. | M2.09 | **DONE** ✅ |
 | **M2.11** | **DELIVERY** | **Levelization & Topological Sorting Kombinasional**<br/>• *DoD:* Modul `crates/dlf-core/src/analysis/levelize.rs` untuk menghitung kedalaman level ketergantungan (level = 1 + max(level sumber)), pengurutan deterministik berurutan level dan ID stabil, unit test levelization lulus. | M2.10 | **DONE** ✅ |
-| **M2.12** | **DELIVERY** | **Elaborasi Hierarki Sub-Sirkuit Dasar (Target P1)**<br/>• *DoD:* Modul `crates/dlf-core/src/analysis/hierarchy.rs` untuk ekspansi sub-sirkuit chip kustom, port-to-pin binding, deteksi siklus instansiasi rekursif `HIER-RECURSION`, unit test elaborasi lulus. | M2.06 | **IN PROGRESS** ⏳ |
-| **M2.13** | **DELIVERY** | **End-to-End M2 Connectivity & Semantic Test Suite**<br/>• *DoD:* Rangkaian integration test komprehensif pada `crates/dlf-core/tests/connectivity_test.rs` dengan aneka variasi sirkuit, seluruh automated tests (`scripts/check.ps1` dan `scripts/test.ps1`) lulus 100%. | M2.07, M2.08, M2.11, M2.12 | *BLOCKED* |
+| **M2.12** | **DELIVERY** | **Elaborasi Hierarki Sub-Sirkuit Dasar (Target P1)**<br/>• *DoD:* Modul `crates/dlf-core/src/analysis/hierarchy.rs` untuk ekspansi sub-sirkuit chip kustom, port-to-pin binding, deteksi siklus instansiasi rekursif `HIER-RECURSION`, unit test elaborasi lulus. | M2.06 | **DONE** ✅ |
+| **M2.13** | **DELIVERY** | **End-to-End M2 Connectivity & Semantic Test Suite**<br/>• *DoD:* Rangkaian integration test komprehensif pada `crates/dlf-core/tests/connectivity_test.rs` dengan aneka variasi sirkuit, seluruh automated tests (`scripts/check.ps1` dan `scripts/test.ps1`) lulus 100%. | M2.07, M2.08, M2.11, M2.12 | **IN PROGRESS** ⏳ |
 
 ---
 
 ## 3. Ringkasan Status Task M2
 - **Total Task:** 13 Task (1 SPIKE, 12 DELIVERY)
-- **Status:** 0 READY, 1 BLOCKED, 1 IN PROGRESS, 11 DONE
-- **Progress:** `11 / 13` (84.6%)
+- **Status:** 0 READY, 0 BLOCKED, 1 IN PROGRESS, 12 DONE
+- **Progress:** `12 / 13` (92.3%)
