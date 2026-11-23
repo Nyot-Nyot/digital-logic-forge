@@ -1,7 +1,7 @@
 # Digital Logic Forge (DLF) — Progress Dashboard
 
-> **Status Saat Ini:** Milestone M2 (Connectivity & Semantic Frontend) — **IN PROGRESS (Pre-Sprint Completed)**  
-> **Terakhir Diperbarui:** 19 November 2026  
+> **Status Saat Ini:** Milestone M2 (Connectivity & Semantic Frontend) — **ACCEPTED ✅**  
+> **Terakhir Diperbarui:** 23 November 2026  
 > **Single Source of Truth (SSoT):** [Proposal TA (Markdown)](../compiled%20circuit%20simulator.md), [Sprint Progress](PROGRESS.md), & Dokumen ini.
 
 ---
@@ -12,8 +12,8 @@
 | :---: | :--- | :---: | :---: | :--- |
 | **M0** | **Implementation Baseline** | P0 | **ACCEPTED** ✅ | Kerangka workspace Cargo, binding GDExtension, smoke test, baseline prototype canvas |
 | **M1** | **Headless Circuit Model** | P0 | **ACCEPTED** ✅ | Dokumen JSON, Stable ID 64-bit, structural validator |
-| **M2** | **Connectivity & Semantic Frontend** | P0 | **IN PROGRESS** 🚀 | Resolusi net & junction, validasi lebar bus, SCC detection |
-| **M3** | **First Compiled Simulation** | P0 | *Not Started* | Snapshot -> Compile -> IR ringkas -> Runtime B1 vs B0 oracle |
+| **M2** | **Connectivity & Semantic Frontend** | P0 | **ACCEPTED** ✅ | Resolusi net & junction, validasi elektris, SCC Tarjan, levelization, hierarki |
+| **M3** | **First Compiled Simulation** | P0 | *Ready to Start* 🚀 | Snapshot -> Compile -> IR ringkas -> Runtime B1 vs B0 oracle |
 | **M4** | **Stateful Simulation** | P0 | *Not Started* | Clock domain, register simultaneous commit, RAM/ROM |
 | **M5** | **Editor Vertical Slice** | P0 | *Not Started* | Canvas editor Godot, placement, wiring, inspector UI |
 | **M6** | **Interactive Runtime** | P0 | *Not Started* | Worker thread, non-blocking UI, command queue, probe viewer |
@@ -23,19 +23,22 @@
 
 ---
 
-## 2. Checklist Detail Milestone Aktif: M0 (Implementation Baseline)
+## 2. Checklist Detail Milestone yang Baru Selesai: M2 (Connectivity & Semantic Frontend)
 
-- [x] Konfirmasi pedoman kode dan working contract di `AGENTS.md`
-- [x] Inisialisasi Git repository & remote GitHub (`Nyot-Nyot/digital-logic-forge`)
-- [x] Setup root `README.md` dengan visualisasi workflow dan status aktif
-- [x] Inisialisasi Cargo Workspace (`dlf-core`, `dlf-godot`) dengan `rust-toolchain.toml` edisi 2024
-- [x] Setup proyek dasar Godot 4.7.2 di `app/godot/` & binding `dlf.gdextension`
-- [x] Implementasi GDExtension binding tipis & smoke test pemanggilan dari GDScript
-- [x] Verifikasi worker Rust thread independen & snapshot non-blocking polling
-- [x] Prototype canvas terpusat (pan/zoom, selection, hit-testing O(1) 2.2 µs pada 2500 elemen)
-- [x] Verifikasi profil release `dlf_godot.dll` dengan LTO
-- [x] Skrip otomatisasi PowerShell di `scripts/` (`check.ps1`, `test.ps1`, `build_extension.ps1`)
-- [x] Audit 8 kriteria keluar M0 & penutupan checklist M0 (Semua 100% Lulus)
+- [x] SPIKE riset DSU deterministik kanonis, validasi elektris, dan pemutusan siklus kombinasional register (`[SPIKE-003]`)
+- [x] Implementasi `DisjointSet<T>` dengan path compression, union-by-rank, dan `canonical_min` tracking
+- [x] Ekstraksi simpul konektivitas `ConnectionNode` (Pin, Port, Junction, Tunnel) dan parsing kawat
+- [x] Resolusi percabangan multi-kawat pada Junction dan segmen merging via DSU
+- [x] Resolusi pasangan Tunnel nirkabel (Local & Global) dan diagnostik `CONN-TUNNEL-UNPAIRED`
+- [x] Konstruksi Netlist Kanonis (`NetId`, `NetTerminal`, `Net`, `Netlist`) dengan pemetaan cepat $O(\log N)$
+- [x] Validasi aturan elektris Multi-Driver check (`NET-MULTI-DRIVER`)
+- [x] Validasi aturan elektris Undriven Net check (`NET-UNDRIVEN`)
+- [x] Konstruksi Graf Ketergantungan Kombinasional (`DependencyGraph`) dengan pemisahan simpul DFF `SequentialSource` (level 0) vs `SequentialSink`
+- [x] Algoritma Tarjan SCC untuk isolasi komponen umpan balik dan pelaporan `DEP-SCC-OSCILLATION`
+- [x] Levelization kombinasional statis (`EvaluationSchedule`) dengan pengurutan linier deterministik
+- [x] Elaborasi hierarki sub-sirkuit kustom dasar (`CircuitInstanceNode`), port-to-pin binding, dan deteksi rekursi tak berhingga `HIER-RECURSION`
+- [x] Rangkaian integrasi end-to-end `crates/dlf-core/tests/connectivity_test.rs` (6 skenario lengkap)
+- [x] Seluruh 65 automated test dan skrip PowerShell (`check.ps1`, `test.ps1`) lulus 100% tanpa warning
 
 ---
 
@@ -55,5 +58,6 @@
 ---
 
 ## 4. Log Perubahan Terakhir (Session Log)
+- **23 Nov 2026**: Milestone M2 (Connectivity & Semantic Frontend) diselesaikan 100% (13/13 tasks). DSU deterministik kanonis, netlist kanonis, validasi elektris multi-driver & undriven, dependency graph dengan pemutusan loop DFF sekuensial, algoritma Tarjan SCC (`DEP-SCC-OSCILLATION`), levelization topologis kombinasional (`EvaluationSchedule`), serta elaborasi hierarki dan deteksi rekursi (`HIER-RECURSION`) berhasil diimplementasikan dan diverifikasi dengan 65 automated tests.
 - **19 Nov 2026**: Milestone M1 (Headless Circuit Model) diselesaikan 100% (14/14 tasks). Format dokumen JSON v1, Stable ID 64-bit deterministik, kontrak pin & bus width 1..64 bit, registry komponen L0/L1, geometri wiring, round-trip fixture test suite, serta validator struktural (`CONN-PIN-UNCONNECTED`, `CONN-WIRE-DANGLING`, `CONN-WIDTH-MISMATCH`) berhasil diimplementasikan dan diverifikasi dengan 31 automated tests.
 - **18 Nov 2026**: Inisialisasi tata kelola proyek, `AGENTS.md`, master workflow framework, dan `DASHBOARD.md`. Penyelesaian Milestone M0.

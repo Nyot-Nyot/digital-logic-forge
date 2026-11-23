@@ -56,3 +56,33 @@ Dokumen ini mencatat evaluasi akhir (*Post-Sprint Retrospective*) dari setiap mi
 ### 4. Tindakan Perbaikan untuk Milestone Berikutnya (Action Items M2)
 - Di Milestone M2 (*Connectivity & Semantic Frontend*), fokus berpindah ke pembentukan graf net listrik menggunakan algoritma **Disjoint Set Union (DSU)** dan deteksi siklus umpan balik via algoritma **Tarjan SCC**.
 - Persiapkan fixture sirkuit dengan berbagai topologi kawat rumit (percabangan jamak, junction berantai, splitter/merger bus, dan tunnel nirkabel).
+
+---
+
+## Milestone M2: Connectivity & Semantic Frontend
+
+- **Tanggal Selesai:** 23 November 2026
+- **Status:** **ACCEPTED** (Seluruh 13 Task & Exit Criteria Lulus 100%)
+- **Git Checkpoint:** [`be7175b`](https://github.com/Nyot-Nyot/digital-logic-forge/commit/be7175b)
+
+### 1. Apa yang Berjalan Baik (What Went Well)?
+- Algoritma **Disjoint Set Union (DSU) Deterministik** dengan pelacakan representatif kanonis minimum (`canonical_min`) berhasil menjamin penomoran `NetId` yang 100% konsisten dan independen dari urutan penggambaran kawat di canvas.
+- Resolusi junction multi-cabang dan pasangan tunnel nirkabel (scope `Local` dan `Global`) bekerja secara mulus menyatukan terminal-terminal terhubung ke dalam netlist kanonis.
+- Aturan validasi elektris (`NET-MULTI-DRIVER` dan `NET-UNDRIVEN`) berhasil mendeteksi konflik penggerak dan terminal menggantung dengan referensi visual lengkap (`primary` dan `related` `SourceRef`) untuk penyorotan di canvas UI.
+- Konstruksi **Graf Ketergantungan Kombinasional (`DependencyGraph`)** berhasil membedakan elemen kombinasional murni dari elemen sekuensial (DFF): pin keluaran `q` bertindak sebagai sumber bebas (level 0) pada awal siklus $t$, sedangkan pin masukan `d` bertindak sebagai beban akhir (level $N$) pada batas clock $t+1$, sehingga memutus siklus kombinasional loop sekuensial (counter/register).
+- Algoritma **Tarjan SCC** berhasil mengisolasi komponen terhubung kuat dan mendeteksi osilasi umpan balik kombinasional ilegal (`DEP-SCC-OSCILLATION`), membedakan wilayah DAG murni dari wilayah siklik.
+- Algoritma **Levelization Kombinasional** menghitung kedalaman level ketergantungan dan menghasilkan urutan evaluasi linier statis (`EvaluationSchedule`) yang deterministik dan siap dikonsumsi langsung oleh compiler IR pada Milestone M3.
+- Modul **Elaborasi Hierarki (`hierarchy.rs`)** berhasil memetakan port-to-pin binding sub-sirkuit dan mendeteksi siklus rekursi instansiasi tak berhingga (`HIER-RECURSION`) via 3-color DFS.
+- Sebanyak 65 automated tests (58 unit tests + 7 integration tests) dan seluruh skrip verifikasi (`check.ps1` dan `test.ps1`) lulus 100% tanpa warning.
+
+### 2. Apa Masalah / Tantangan yang Dihadapi (What Went Wrong)?
+- Pada implementasi awal resolusi tunnel nirkabel, node tunnel diekstraksi ke DSU namun pin terminal kawat pada tunnel belum otomatis dipersatukan dengan partisi tunnel-nya. Masalah ini diselesaikan dengan menyatukan simpul pin tunnel ke simpul tunnel secara eksplisit saat fase resolusi.
+- Clippy edisi terbaru memicu peringatan `collapsible_if` pada rantai pencocokan prefix `definition_id`, yang diselesaikan secara fungsional menggunakan combinator `Option::filter` dan `and_then`.
+
+### 3. Temuan Kunci & Pembelajaran (Key Learnings / SPIKE Results)
+- Penentuan root kanonis DSU berbasis ID objek terkecil di dalam equivalence class terbukti sangat ampuh menghasilkan identitas netlist yang sepenuhnya deterministik (KNF-01).
+- Pemodelan elemen sekuensial sebagai simpul ganda (`SequentialSource` di awal siklus dan `SequentialSink` di akhir siklus) dalam graf ketergantungan kombinasional adalah solusi standar industri yang terbukti elegan dan akurat untuk memutus siklus sekuensial tanpa kehilangan kemampuan mendeteksi loop osilasi kombinasional murni. Hasil dicatat di [SPIKE-003].
+
+### 4. Tindakan Perbaikan untuk Milestone Berikutnya (Action Items M3)
+- Pada Milestone M3 (*First Compiled Simulation*), hasil `Netlist` dan `EvaluationSchedule` dari M2 akan dikonsumsi oleh pipeline kompilasi untuk alokasi memori runtime kontigu (slot state) dan penerjemahan ke instruksi IR ringkas.
+- Membangun *Reference Evaluator* (interpreter baseline B0) sebagai *oracle* pembanding terhadap *Compiled Simulator* (B1) untuk pengujian diferensial bit-exact pada rangkaian kombinasional.
