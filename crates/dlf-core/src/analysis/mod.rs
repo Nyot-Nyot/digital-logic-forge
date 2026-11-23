@@ -5,7 +5,9 @@
 //! (*topological levelization*) sesuai Bab 3.4.1 dan Bab 3.10.11 proposal.
 
 pub mod graph;
+pub mod levelize;
 pub mod scc;
 
 pub use graph::{DependencyGraph, GraphNode};
+pub use levelize::{EvaluationSchedule, levelize_dependency_graph};
 pub use scc::{SccAnalysisResult, StronglyConnectedComponent, analyze_scc};
