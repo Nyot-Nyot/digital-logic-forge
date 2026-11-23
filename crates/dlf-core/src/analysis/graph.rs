@@ -9,6 +9,7 @@
 //! sehingga memutus siklus kombinasional antar-siklus clock.
 
 use crate::connectivity::{NetTerminal, Netlist};
+use crate::diagnostic::SourceRef;
 use crate::model::circuit::CircuitDefinition;
 use crate::model::component::{BehaviorKind, ComponentRegistry};
 use crate::model::id::{InstanceId, PinId};
@@ -56,6 +57,17 @@ impl GraphNode {
     #[inline]
     pub const fn is_sequential(&self) -> bool {
         matches!(self, Self::SequentialSource(_) | Self::SequentialSink(_))
+    }
+
+    /// Mengonversi simpul graf menjadi referensi visual `SourceRef`.
+    #[inline]
+    pub const fn to_source_ref(&self) -> SourceRef {
+        match *self {
+            Self::Combinational(id) | Self::SequentialSource(id) | Self::SequentialSink(id) => {
+                SourceRef::Instance { id }
+            }
+            Self::InputPort(id) | Self::OutputPort(id) => SourceRef::Port { id },
+        }
     }
 }
 

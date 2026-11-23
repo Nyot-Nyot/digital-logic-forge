@@ -8,9 +8,9 @@
 
 ## 1. Task yang Sedang Berjalan (IN PROGRESS)
 
-- [ ] **M2.10 [DELIVERY]** — **Deteksi Siklus & Analisis SCC (Tarjan Algorithm)**  
-  *Deskripsi:* Buat modul `crates/dlf-core/src/analysis/scc.rs` dengan algoritma Tarjan untuk mendeteksi Strongly Connected Components (SCC) pada `DependencyGraph`. Mengidentifikasi komponen kombinasional yang membentuk loop umpan balik (feedback cycle), memisahkan wilayah DAG murni dari wilayah siklik, serta menerbitkan diagnostik `DEP-SCC-OSCILLATION` jika terdapat siklus kombinasional ilegal.  
-  *DoD:* Algoritma Tarjan SCC deterministik, identifikasi siklus kombinasional (SCC dengan ukuran > 1 atau self-loop), pemisahan komponen asiklik vs siklik, pelaporan diagnostik `DiagnosticCode::DepSccOscillation`, unit test SCC lulus.
+- [ ] **M2.11 [DELIVERY]** — **Levelization & Topological Sorting Kombinasional**  
+  *Deskripsi:* Buat modul `crates/dlf-core/src/analysis/levelize.rs` untuk menghitung kedalaman level ketergantungan ($\text{level}(u) = 1 + \max_{(v \to u)} \text{level}(v)$), menghasilkan urutan evaluasi topologis statis (*levelized full-cycle execution*) yang deterministik, dengan pengurutan stabil antar simpul pada level yang sama berbasis ID numerik.  
+  *DoD:* Penghitungan level dependensi asiklik, pengurutan urutan evaluasi deterministik (`Vec<Vec<GraphNode>>` atau urutan terstruktur), unit test levelization lulus.
 
 ---
 
@@ -27,8 +27,8 @@
 | **M2.07** | **DELIVERY** | **Validasi Elektris Net: Multi-Driver Check (`NET-MULTI-DRIVER`)**<br/>• *DoD:* Aturan validasi net untuk mendeteksi lebih dari satu driver aktif pada net yang tidak diresolusi (dua output pin berkonflik), menghasilkan error `NET-MULTI-DRIVER` dengan daftar driver terkait, unit test lulus. | M2.06 | **DONE** ✅ |
 | **M2.08** | **DELIVERY** | **Validasi Elektris Net: Undriven Net Check (`NET-UNDRIVEN`)**<br/>• *DoD:* Aturan validasi net mendeteksi net yang memiliki beban (input pin) tetapi tidak memiliki penggerak (output pin/port), menghasilkan warning/error `NET-UNDRIVEN`, unit test lulus. | M2.06 | **DONE** ✅ |
 | **M2.09** | **DELIVERY** | **Konstruksi Graf Ketergantungan Kombinasional**<br/>• *DoD:* Modul `crates/dlf-core/src/analysis/graph.rs` dengan struct `DependencyGraph`, simpul operasi dan sisi aliran sinyal driver-ke-load, pemutusan siklus kombinasional pada register (DFF), unit test graf lulus. | M2.06 | **DONE** ✅ |
-| **M2.10** | **DELIVERY** | **Deteksi Siklus & Analisis SCC (Tarjan Algorithm)**<br/>• *DoD:* Modul `crates/dlf-core/src/analysis/scc.rs` dengan algoritma Tarjan untuk mendeteksi Strongly Connected Components, pemisahan wilayah asiklik (DAG) dari siklik (feedback), pelaporan diagnostik `DEP-SCC-OSCILLATION`, unit test lulus. | M2.09 | **IN PROGRESS** ⏳ |
-| **M2.11** | **DELIVERY** | **Levelization & Topological Sorting Kombinasional**<br/>• *DoD:* Modul `crates/dlf-core/src/analysis/levelize.rs` untuk menghitung kedalaman level ketergantungan (level = 1 + max(level sumber)), pengurutan deterministik berurutan level dan ID stabil, unit test levelization lulus. | M2.10 | *BLOCKED* |
+| **M2.10** | **DELIVERY** | **Deteksi Siklus & Analisis SCC (Tarjan Algorithm)**<br/>• *DoD:* Modul `crates/dlf-core/src/analysis/scc.rs` dengan algoritma Tarjan untuk mendeteksi Strongly Connected Components, pemisahan wilayah asiklik (DAG) dari siklik (feedback), pelaporan diagnostik `DEP-SCC-OSCILLATION`, unit test lulus. | M2.09 | **DONE** ✅ |
+| **M2.11** | **DELIVERY** | **Levelization & Topological Sorting Kombinasional**<br/>• *DoD:* Modul `crates/dlf-core/src/analysis/levelize.rs` untuk menghitung kedalaman level ketergantungan (level = 1 + max(level sumber)), pengurutan deterministik berurutan level dan ID stabil, unit test levelization lulus. | M2.10 | **IN PROGRESS** ⏳ |
 | **M2.12** | **DELIVERY** | **Elaborasi Hierarki Sub-Sirkuit Dasar (Target P1)**<br/>• *DoD:* Modul `crates/dlf-core/src/analysis/hierarchy.rs` untuk ekspansi sub-sirkuit chip kustom, port-to-pin binding, deteksi siklus instansiasi rekursif `HIER-RECURSION`, unit test elaborasi lulus. | M2.06 | **READY** 🚀 |
 | **M2.13** | **DELIVERY** | **End-to-End M2 Connectivity & Semantic Test Suite**<br/>• *DoD:* Rangkaian integration test komprehensif pada `crates/dlf-core/tests/connectivity_test.rs` dengan aneka variasi sirkuit, seluruh automated tests (`scripts/check.ps1` dan `scripts/test.ps1`) lulus 100%. | M2.07, M2.08, M2.11, M2.12 | *BLOCKED* |
 
@@ -36,5 +36,5 @@
 
 ## 3. Ringkasan Status Task M2
 - **Total Task:** 13 Task (1 SPIKE, 12 DELIVERY)
-- **Status:** 1 READY, 2 BLOCKED, 1 IN PROGRESS, 9 DONE
-- **Progress:** `9 / 13` (69.2%)
+- **Status:** 1 READY, 1 BLOCKED, 1 IN PROGRESS, 10 DONE
+- **Progress:** `10 / 13` (76.9%)
