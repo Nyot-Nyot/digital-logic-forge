@@ -1,6 +1,6 @@
 # Digital Logic Forge (DLF) — Progress Dashboard
 
-> **Status Saat Ini:** Milestone M2 (Connectivity & Semantic Frontend) — **ACCEPTED ✅**  
+> **Status Saat Ini:** Milestone M3 (First Compiled Simulation) — **IN PROGRESS (Pre-Sprint Completed)**  
 > **Terakhir Diperbarui:** 23 November 2026  
 > **Single Source of Truth (SSoT):** [Proposal TA (Markdown)](../compiled%20circuit%20simulator.md), [Sprint Progress](PROGRESS.md), & Dokumen ini.
 
@@ -13,7 +13,7 @@
 | **M0** | **Implementation Baseline** | P0 | **ACCEPTED** ✅ | Kerangka workspace Cargo, binding GDExtension, smoke test, baseline prototype canvas |
 | **M1** | **Headless Circuit Model** | P0 | **ACCEPTED** ✅ | Dokumen JSON, Stable ID 64-bit, structural validator |
 | **M2** | **Connectivity & Semantic Frontend** | P0 | **ACCEPTED** ✅ | Resolusi net & junction, validasi elektris, SCC Tarjan, levelization, hierarki |
-| **M3** | **First Compiled Simulation** | P0 | *Ready to Start* 🚀 | Snapshot -> Compile -> IR ringkas -> Runtime B1 vs B0 oracle |
+| **M3** | **First Compiled Simulation** | P0 | **IN PROGRESS** 🚀 | Snapshot -> Compile -> IR ringkas -> Runtime B1 vs B0 oracle |
 | **M4** | **Stateful Simulation** | P0 | *Not Started* | Clock domain, register simultaneous commit, RAM/ROM |
 | **M5** | **Editor Vertical Slice** | P0 | *Not Started* | Canvas editor Godot, placement, wiring, inspector UI |
 | **M6** | **Interactive Runtime** | P0 | *Not Started* | Worker thread, non-blocking UI, command queue, probe viewer |
@@ -58,6 +58,7 @@
 ---
 
 ## 4. Log Perubahan Terakhir (Session Log)
+- **23 Nov 2026 (M3 Pre-Sprint)**: Dekomposisi Milestone M3 (First Compiled Simulation) menjadi 12 task terukur (1 SPIKE, 11 DELIVERY) dengan DoD testable dan pemetaan dependensi. Backlog disimpan di `PROGRESS.md`. Task M3.01 [SPIKE] berstatus `READY`.
 - **23 Nov 2026**: Milestone M2 (Connectivity & Semantic Frontend) diselesaikan 100% (13/13 tasks). DSU deterministik kanonis, netlist kanonis, validasi elektris multi-driver & undriven, dependency graph dengan pemutusan loop DFF sekuensial, algoritma Tarjan SCC (`DEP-SCC-OSCILLATION`), levelization topologis kombinasional (`EvaluationSchedule`), serta elaborasi hierarki dan deteksi rekursi (`HIER-RECURSION`) berhasil diimplementasikan dan diverifikasi dengan 65 automated tests.
 - **19 Nov 2026**: Milestone M1 (Headless Circuit Model) diselesaikan 100% (14/14 tasks). Format dokumen JSON v1, Stable ID 64-bit deterministik, kontrak pin & bus width 1..64 bit, registry komponen L0/L1, geometri wiring, round-trip fixture test suite, serta validator struktural (`CONN-PIN-UNCONNECTED`, `CONN-WIRE-DANGLING`, `CONN-WIDTH-MISMATCH`) berhasil diimplementasikan dan diverifikasi dengan 31 automated tests.
 - **18 Nov 2026**: Inisialisasi tata kelola proyek, `AGENTS.md`, master workflow framework, dan `DASHBOARD.md`. Penyelesaian Milestone M0.
