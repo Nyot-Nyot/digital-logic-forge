@@ -86,3 +86,30 @@ Dokumen ini mencatat evaluasi akhir (*Post-Sprint Retrospective*) dari setiap mi
 ### 4. Tindakan Perbaikan untuk Milestone Berikutnya (Action Items M3)
 - Pada Milestone M3 (*First Compiled Simulation*), hasil `Netlist` dan `EvaluationSchedule` dari M2 akan dikonsumsi oleh pipeline kompilasi untuk alokasi memori runtime kontigu (slot state) dan penerjemahan ke instruksi IR ringkas.
 - Membangun *Reference Evaluator* (interpreter baseline B0) sebagai *oracle* pembanding terhadap *Compiled Simulator* (B1) untuk pengujian diferensial bit-exact pada rangkaian kombinasional.
+
+---
+
+## Milestone M3: First Compiled Simulation
+
+- **Tanggal Selesai:** 26 November 2026
+- **Status:** **ACCEPTED** (Seluruh 12 Task & Exit Criteria Lulus 100%)
+- **Git Checkpoint:** `HEAD` (Milestone M3 Completed)
+
+### 1. Apa yang Berjalan Baik (What Went Well)?
+- Arsitektur 3-representasi (*Authoring Document* -> *Compiled Artifact* -> *Runtime State*) berjalan bersih dari ujung ke ujung melalui `CircuitSnapshot` -> `CircuitCompiler::compile` -> `CompiledRuntime::from_artifact`.
+- Resolusi **TBD-1** dan **TBD-2** di `[SPIKE-004]` menghasilkan desain dual-word (`values: Vec<u64>`, `unknowns: Vec<u64>`) yang mampu mengeksekusi operasi 64-bit dan logika 4-nilai konservatif secara paralel tanpa *bit-unpacking*.
+- Pemisahan total antara **B0 (`ReferenceEvaluator`)** yang mengevaluasi graf komponen bit-demi-bit menggunakan tabel kebenaran eksplisit `BitState` dan **B1 (`CompiledRuntime`)** yang mengeksekusi IR datar berbasis array kontigu menghasilkan verifikasi diferensial independen yang sangat kuat.
+- Seluruh workload uji non-trivial (4-bit Ripple-Carry Adder exhaustive 512 vektor, 8-bit ALU dengan 1.000 vektor fuzz 4-nilai, 8-bit Barrel Shifter dengan inspeksi probe `SourceMap`, dan 4-to-2 Priority Encoder) lulus 100% *bit-exact* antara B0 dan B1.
+- Total 85 automated tests (74 unit tests + 11 integration tests) serta seluruh Godot GDExtension headless smoke test lulus 100% tanpa peringatan `clippy` maupun `rustfmt`.
+
+### 2. Apa Masalah / Tantangan yang Dihadapi (What Went Wrong)?
+- Tipe `Endpoint` pada model dokumen menggunakan koordinat `Point` (`f64`), sehingga tidak mengimplementasikan `Eq`/`Hash`/`Ord` untuk dipakai langsung sebagai key `HashMap`/`BTreeMap` pada helper `CircuitBuilder` di integration test; diselesaikan dengan `Vec<(Endpoint, JunctionId)>`.
+- Lint Clippy `single_range_in_vec_init` mendeteksi `vec![0..1]` dan `Vec::from([0..1])`; diselesaikan dengan `std::iter::once(0..1).collect()` atau `.pop()`.
+
+### 3. Temuan Kunci & Pembelajaran (Key Learnings / SPIKE Results)
+- Formula *branchless* untuk MUX konservatif saat selektor bernilai `X`/`Z` (`unk = (d0_unk | d1_unk | (d0_val ^ d1_val)) & mask`, `val = (d0_val & d1_val) & !unk & mask`) terbukti 100% ekuivalen dengan tabel kebenaran `BitState::mux` pada seluruh uji diferensial.
+- Penambahan primitif `dlf.builtin.const`, `dlf.builtin.slice`, dan `dlf.builtin.concat` pada `ComponentRegistry` sangat mempermudah konstruksi *datapath* multi-bit yang realistis.
+
+### 4. Tindakan Perbaikan untuk Milestone Berikutnya (Action Items M4)
+- Pada **M4 (Stateful Simulation)**, tutup **TBD-4** (kebijakan *state* awal), **TBD-5** (prioritas *reset* dan *enable* register), **TBD-6** (mode baca bawaan RAM), dan format *image* ROM pada fase Pre-Sprint / SPIKE.
+- Ekspansi `CompiledOp` dengan `DffNext`, `MemRead`, dan `MemWrite`, serta tambahkan `StateSlot` (current/next state untuk *simultaneous commit*) dan `MemoryRegion` pada `CompiledArtifact` dan `CompiledRuntime`.

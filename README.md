@@ -10,9 +10,9 @@
 
 | Parameter | Keterangan |
 | :--- | :--- |
-| **Milestone Aktif** | **M3: First Compiled Simulation** 🚀 *(M0, M1, & M2 Selesai & Terverifikasi)* |
-| **Fokus Pekerjaan** | Snapshot -> Compile -> IR Lowering -> Runtime B1 vs B0 Differential Oracle |
-| **Status Engine** | Netlist kanonis DSU, validasi elektris, dependency graph, Tarjan SCC, levelization, & hierarki lulus (65 tests) |
+| **Milestone Aktif** | **M4: Stateful Simulation** 🚀 *(M0, M1, M2, & M3 Selesai & Terverifikasi)* |
+| **Fokus Pekerjaan** | Clock Domain, Register Simultaneous Commit, & RAM/ROM Awal |
+| **Status Engine** | Snapshot -> Compile -> IR Ringkas -> Runtime Kontigu (B1) vs Oracle (B0) lulus (85 tests) |
 | **Single Source of Truth** | [Proposal TA (Markdown)](docs/compiled%20circuit%20simulator.md) & [Progress Dashboard](docs/tracking/DASHBOARD.md) |
 
 ---
@@ -27,7 +27,7 @@ Proyek ini dibangun secara inkremental dan digerakkan oleh risiko (*risk-driven 
 flowchart LR
     M0["M0: Baseline (Done)"] --> M1["M1: Headless Model (Done)"]
     M1 --> M2["M2: Connectivity (Done)"]
-    M2 --> M3["M3: First Compiled"]
+    M2 --> M3["M3: First Compiled (Done)"]
     M3 --> M4["M4: Stateful Sim"]
     M4 --> M5["M5: Editor Slice"]
     M5 --> M6["M6: Interactive Worker"]
@@ -38,9 +38,9 @@ flowchart LR
     classDef done fill:#16a34a,stroke:#15803d,stroke-width:2px,color:#fff;
     classDef active fill:#2563eb,stroke:#1d4ed8,stroke-width:2px,color:#fff;
     classDef pending fill:#374151,stroke:#4b5563,stroke-width:1px,color:#9ca3af;
-    class M0,M1,M2 done;
-    class M3 active;
-    class M4,M5,M6,M7,M8,M9 pending;
+    class M0,M1,M2,M3 done;
+    class M4 active;
+    class M5,M6,M7,M8,M9 pending;
 ```
 
 ### 2. Siklus Eksekusi per Milestone (The 3-Phase Milestone Loop)
