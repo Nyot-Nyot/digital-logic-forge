@@ -5,9 +5,11 @@
 //! - `CompiledRuntime` (B1): evaluator terkompilasi berkinerja tinggi berbasis array kontigu.
 
 pub mod compiled;
+pub mod differential;
 pub mod reference;
 pub mod value;
 
 pub use compiled::CompiledRuntime;
+pub use differential::{DifferentialHarness, DifferentialMismatch, DifferentialReport};
 pub use reference::ReferenceEvaluator;
 pub use value::LogicValue;
