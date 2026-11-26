@@ -34,6 +34,9 @@ pub mod ir;
 /// Modul kompilator sirkuit, alokasi slot, dan *IR lowering*.
 pub mod compiler;
 
+/// Modul runtime eksekusi simulasi (*Reference Evaluator* B0 dan *Compiled Runtime* B1).
+pub mod runtime;
+
 /// Modul worker simulasi latar belakang dan protokol snapshot.
 pub mod worker;
 
