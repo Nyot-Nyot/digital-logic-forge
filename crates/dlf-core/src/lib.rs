@@ -28,6 +28,9 @@ pub mod validation;
 /// Modul analisis semantik, graf ketergantungan, dan penjadwalan eksekusi.
 pub mod analysis;
 
+/// Modul representasi menengah (*Intermediate Representation* / IR) terkompilasi.
+pub mod ir;
+
 /// Modul worker simulasi latar belakang dan protokol snapshot.
 pub mod worker;
 

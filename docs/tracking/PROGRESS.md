@@ -8,7 +8,7 @@
 
 ## 1. Task yang Sedang Berjalan (IN PROGRESS)
 
-- **M3.02 [DELIVERY]**: Definisi Model IR & Instruksi Kompilasi (`Opcode`, `CompiledOp`, `CompiledArtifact`)
+- **M3.03 [DELIVERY]**: Alokasi Slot Memori Kontigu & Pemetaan Simbolik (`SignalSlotAllocator`, `SourceMap`, `Bindings`)
 
 ---
 
@@ -17,8 +17,8 @@
 | ID | Tipe | Deskripsi Task & Definition of Done (DoD) | Dependensi | Status |
 | :---: | :---: | :--- | :---: | :---: |
 | **M3.01** | **SPIKE** | **Riset & Desain IR, Memory Layout, Semantik 4-Nilai, & Arsitektur Reference Evaluator (B0)**<br/>• *DoD:* Dokumen keputusan teknis di `docs/decisions/DECISIONS.md` (`[SPIKE-004]`) yang menetapkan arsitektur opcode IR ringkas (Tabel 3.25), layout array kontigu (Tabel 3.26), resolusi TBD-1 (tabel kebenaran MUX & konservatisme IEEE), analisis TBD-2 (pengodean 4-nilai mask vs 2-bit packed), serta strategi differential testing B0 vs B1. | *None* | **DONE** ✅ |
-| **M3.02** | **DELIVERY** | **Definisi Model IR & Instruksi Kompilasi (`Opcode`, `CompiledOp`, `CompiledArtifact`)**<br/>• *DoD:* Modul `crates/dlf-core/src/ir/` dengan enum `Opcode` (BUF, NOT, AND, OR, XOR, NAND, NOR, XNOR, CONST, MUX, SLICE, CONCAT), struct `CompiledOp` (`opcode, dst, src_a, src_b, src_c, width, flags`), dan container `CompiledArtifact`. Unit test validasi invariant struct IR lulus. | M3.01 | **IN PROGRESS** 🔨 |
-| **M3.03** | **DELIVERY** | **Alokasi Slot Memori Kontigu & Pemetaan Simbolik (`SignalSlotAllocator`, `SourceMap`, `Bindings`)**<br/>• *DoD:* Struct `SignalSlotAllocator` untuk memetakan `NetId` dan konstanta ke indeks slot memori (`usize`), serta pembuatan `InputBinding`, `OutputBinding`, dan `SourceMap` (Tabel 3.26) yang memetakan slot runtime kembali ke ID komponen/pin editor untuk diagnostik. Unit test alokasi lulus. | M3.02 | **BLOCKED** |
+| **M3.02** | **DELIVERY** | **Definisi Model IR & Instruksi Kompilasi (`Opcode`, `CompiledOp`, `CompiledArtifact`)**<br/>• *DoD:* Modul `crates/dlf-core/src/ir/` dengan enum `Opcode` (BUF, NOT, AND, OR, XOR, NAND, NOR, XNOR, CONST, MUX, SLICE, CONCAT), struct `CompiledOp` (`opcode, dst, src_a, src_b, src_c, width, flags`), dan container `CompiledArtifact`. Unit test validasi invariant struct IR lulus. | M3.01 | **DONE** ✅ |
+| **M3.03** | **DELIVERY** | **Alokasi Slot Memori Kontigu & Pemetaan Simbolik (`SignalSlotAllocator`, `SourceMap`, `Bindings`)**<br/>• *DoD:* Struct `SignalSlotAllocator` untuk memetakan `NetId` dan konstanta ke indeks slot memori (`usize`), serta pembuatan `InputBinding`, `OutputBinding`, dan `SourceMap` (Tabel 3.26) yang memetakan slot runtime kembali ke ID komponen/pin editor untuk diagnostik. Unit test alokasi lulus. | M3.02 | **IN PROGRESS** 🔨 |
 | **M3.04** | **DELIVERY** | **IR Lowering Engine (Translasi Netlist & EvaluationSchedule ke IR Terkompilasi)**<br/>• *DoD:* Modul `crates/dlf-core/src/compiler/lowering.rs` yang mengonversi `Netlist`, komponen primitif kombinasional, dan `EvaluationSchedule` hasil levelisasi M2 menjadi daftar `CompiledOp` berurutan per level (`LevelRange`). Unit test lowering sirkuit dasar lulus. | M3.03 | **BLOCKED** |
 | **M3.05** | **DELIVERY** | **Pipeline Snapshot & Kompilasi Sirkuit (`CircuitSnapshot` & `CircuitCompiler`)**<br/>• *DoD:* Modul `crates/dlf-core/src/compiler/pipeline.rs` yang membekukan `CircuitDocument` menjadi snapshot immutable, menjalankan validasi frontend M2 (netlist, SCC, electrical rules), dan memanggil lowering engine untuk menghasilkan `CompiledArtifact`. Error diagnostik lengkap jika kompilasi gagal. Unit test lulus. | M3.04 | **BLOCKED** |
 | **M3.06** | **DELIVERY** | **Reference Evaluator Kombinasional (B0 Oracle Interpreter)**<br/>• *DoD:* Modul `crates/dlf-core/src/runtime/reference.rs` sebagai evaluator semantik independen (B0) yang mengevaluasi graf rangkaian secara langsung (topological graph walk tanpa IR flat) untuk menghasilkan golden reference output. Unit test evaluator B0 lulus. | M3.01, M3.04 | **BLOCKED** |
