@@ -31,6 +31,9 @@ pub mod analysis;
 /// Modul representasi menengah (*Intermediate Representation* / IR) terkompilasi.
 pub mod ir;
 
+/// Modul kompilator sirkuit, alokasi slot, dan *IR lowering*.
+pub mod compiler;
+
 /// Modul worker simulasi latar belakang dan protokol snapshot.
 pub mod worker;
 
