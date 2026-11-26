@@ -6,6 +6,8 @@
 
 pub mod allocator;
 pub mod lowering;
+pub mod pipeline;
 
 pub use allocator::{AllocatedLayout, SignalSlotAllocator};
 pub use lowering::lower_to_ir;
+pub use pipeline::{CircuitCompiler, CircuitSnapshot, CompilationError, CompilationResult};
