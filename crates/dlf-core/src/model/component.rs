@@ -562,6 +562,112 @@ impl ComponentRegistry {
                 ])
                 .build(),
         );
+
+        // Constant Source
+        self.register(
+            ComponentDefinition::builder("dlf.builtin.const", 1)
+                .display_name("Constant")
+                .category("Wiring")
+                .behavior_kind(BehaviorKind::Combinational)
+                .implementation_kind(ImplementationKind::NativePrimitive)
+                .pins(vec![PinDeclaration::new(
+                    "y",
+                    "Output Y",
+                    PinDirection::Output,
+                    SignalWidth::SINGLE,
+                    PinRole::Data,
+                    false,
+                )])
+                .parameters(vec![
+                    ParameterDeclaration::new(
+                        "width",
+                        "Lebar bit konstanta",
+                        ParameterValue::Integer(1),
+                    ),
+                    ParameterDeclaration::new(
+                        "value",
+                        "Nilai konstanta 64-bit",
+                        ParameterValue::Integer(0),
+                    ),
+                ])
+                .build(),
+        );
+
+        // Bit Slice (Splitter 1-output slice)
+        self.register(
+            ComponentDefinition::builder("dlf.builtin.slice", 1)
+                .display_name("Bit Slice")
+                .category("Wiring")
+                .behavior_kind(BehaviorKind::Combinational)
+                .implementation_kind(ImplementationKind::NativePrimitive)
+                .pins(vec![
+                    PinDeclaration::new(
+                        "a",
+                        "Input Bus",
+                        PinDirection::Input,
+                        SignalWidth::SINGLE,
+                        PinRole::Data,
+                        true,
+                    ),
+                    PinDeclaration::new(
+                        "y",
+                        "Sliced Output",
+                        PinDirection::Output,
+                        SignalWidth::SINGLE,
+                        PinRole::Data,
+                        false,
+                    ),
+                ])
+                .parameters(vec![
+                    ParameterDeclaration::new(
+                        "offset",
+                        "Offset bit LSB awal",
+                        ParameterValue::Integer(0),
+                    ),
+                    ParameterDeclaration::new(
+                        "width",
+                        "Lebar bit irisan keluaran",
+                        ParameterValue::Integer(1),
+                    ),
+                ])
+                .build(),
+        );
+
+        // Bus Concat (Merger 2-input)
+        self.register(
+            ComponentDefinition::builder("dlf.builtin.concat", 1)
+                .display_name("Bus Concat")
+                .category("Wiring")
+                .behavior_kind(BehaviorKind::Combinational)
+                .implementation_kind(ImplementationKind::NativePrimitive)
+                .pins(vec![
+                    PinDeclaration::new(
+                        "low",
+                        "Low Bits",
+                        PinDirection::Input,
+                        SignalWidth::SINGLE,
+                        PinRole::Data,
+                        true,
+                    ),
+                    PinDeclaration::new(
+                        "high",
+                        "High Bits",
+                        PinDirection::Input,
+                        SignalWidth::SINGLE,
+                        PinRole::Data,
+                        true,
+                    ),
+                    PinDeclaration::new(
+                        "y",
+                        "Merged Bus",
+                        PinDirection::Output,
+                        SignalWidth::SINGLE,
+                        PinRole::Data,
+                        false,
+                    ),
+                ])
+                .build(),
+        );
     }
 }
 

@@ -5,5 +5,7 @@
 //! oleh runtime simulasi.
 
 pub mod allocator;
+pub mod lowering;
 
 pub use allocator::{AllocatedLayout, SignalSlotAllocator};
+pub use lowering::lower_to_ir;
