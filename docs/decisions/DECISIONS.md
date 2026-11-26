@@ -90,3 +90,42 @@ Dokumen ini mencatat seluruh keputusan teknis arsitektur, hasil eksperimen (*SPI
 - **Konsekuensi & Dampak:**
   - Netlist kanonis dan urutan levelization siap dikonsumsi langsung oleh Milestone M3 (*First Compiled Simulation*) untuk IR Lowering dan alokasi layout memori simulasi.
   - Memenuhi jaminan kebenaran determinisme (KNF-01) dan keterlacakan diagnostik visual (KNF-03).
+
+---
+
+### [SPIKE-004] Desain IR, Layout Memori Kontigu, Semantik 4-Nilai (TBD-1 & TBD-2), dan Strategi Differential Testing (B0 vs B1)
+- **Tanggal:** 2026-11-26
+- **Milestone Terkait:** M3 (First Compiled Simulation)
+- **Konteks & Masalah:** Milestone M3 membutuhkan pipeline `Snapshot → Compile → IR Ringkas → Runtime Array Kontigu (B1)` beserta evaluator semantik independen (`B0`) untuk *differential testing*. Sebelum mengimplementasikan compiler dan runtime, diperlukan penetapan struktur opcode IR (Tabel 3.25), tata letak memori datar (Tabel 3.26), resolusi **TBD-1** (tabel kebenaran primitif & MUX untuk X/Z), serta resolusi **TBD-2** (representasi pengodean 4-nilai).
+- **Opsi yang Dieksplorasi:**
+  1. **Pengodean 4-Nilai (TBD-2):**
+     - *Kandidat A — Dual-Word (`values: Vec<u64>` + `unknowns: Vec<u64>`):* Setiap sinyal hingga 64 bit disimpan dalam sepasang `u64` (`val`, `unk`), di mana `(0,0) = 0`, `(1,0) = 1`, `(0,1) = X`, `(1,1) = Z`. Operasi logika 64-bit dapat dieksekusi secara paralel dalam beberapa instruksi bitwise CPU tanpa pembongkaran bit. `SLICE` dan `CONCAT` cukup memakai shift dan mask standar.
+     - *Kandidat B — 2-Bit Packed per Bit:* Membutuhkan dua `u64` juga untuk bus >32 bit (maksimal 64 bit = 128 bit terkemas), namun `SLICE`, `CONCAT`, dan logika bitwise menjadi rumit dan membutuhkan *masking* berulang setiap 2 bit.
+  2. **Desain Instruksi `CompiledOp` untuk Konstanta & Slice:**
+     - Menyimpan parameter tambahan (nilai konstanta 64-bit atau offset slice) ke dalam `const_pool: Vec<u64>` di `CompiledArtifact`, atau langsung di field `CompiledOp` (`src_a`, `src_b`, `src_c`).
+     - Dengan `const_pool: Vec<u64>`, `CompiledOp` tetap berukuran seragam dan ringkas (`opcode`, `dst`, `src_a`, `src_b`, `src_c`, `width`, `flags`), di mana `OP_CONST` membaca indeks pool pada `src_a` dan `OP_SLICE` membaca offset bit pada `src_b`.
+- **Keputusan Terpilih:**
+  1. **Resolusi TBD-2 (Pengodean 4-Nilai):** Memilih **Kandidat A (Dual-Word `val: u64`, `unk: u64`)**.
+     - *Encoding:* `unk=0, val=0 → 0`; `unk=0, val=1 → 1`; `unk=1, val=0 → X`; `unk=1, val=1 → Z` (di masukan gerbang logika, `Z` dinormalisasi menjadi `X` dengan `val = val & !unk`, `unk = unk`).
+     - *Width Masking:* Setiap penulisan ke slot tujuan menerapkan `mask = if width >= 64 { u64::MAX } else { (1u64 << width) - 1 }` pada `val` maupun `unk` agar bit di luar lebar bus tidak pernah bocor.
+  2. **Resolusi TBD-1 (Tabel Kebenaran Konservatif & MUX):**
+     - Gerbang logika memakai evaluasi bitwise 4-nilai konservatif (Tabel 3.24 proposal):
+       - `NOT(a)`: `val = !a_val & !a_unk`, `unk = a_unk`.
+       - `AND(a, b)`: `known_zero = (!a_val & !a_unk) | (!b_val & !b_unk)`, `unk = (a_unk | b_unk) & !known_zero`, `val = a_val & b_val & !unk`.
+       - `OR(a, b)`: `known_one = (a_val & !a_unk) | (b_val & !b_unk)`, `unk = (a_unk | b_unk) & !known_one`, `val = (a_val | b_val) & !unk`.
+       - `XOR(a, b)`: `unk = a_unk | b_unk`, `val = (a_val ^ b_val) & !unk`.
+       - `NAND`, `NOR`, `XNOR`: negasi langsung dari hasil `AND`, `OR`, `XOR` menggunakan aturan `NOT`.
+     - `MUX(d0, d1, sel)`:
+       - Jika `sel` diketahui (`sel_unk & 1 == 0`), pilih `d0` (`sel == 0`) atau `d1` (`sel == 1`).
+       - Jika `sel` bernilai `X` atau `Z` (`sel_unk & 1 == 1`), terapkan penggabungan konservatif bit-demi-bit: `unk_out = d0_unk | d1_unk | (d0_val ^ d1_val)`, `val_out = (d0_val & d1_val) & !unk_out`. Bit yang nilainya identik dan diketahui pada kedua cabang tetap terdefinisi; bit yang berbeda menghasilkan `X`.
+  3. **Struktur IR & Runtime Layout (Tabel 3.25 & 3.26):**
+     - `Opcode`: `Buf`, `Not`, `And`, `Or`, `Xor`, `Nand`, `Nor`, `Xnor`, `Const`, `Mux`, `Slice`, `Concat`.
+     - `CompiledOp`: struct ringkas dengan `opcode`, `dst`, `src_a`, `src_b`, `src_c`, `width: u8`, `flags: u8`.
+     - `CompiledArtifact`: memuat `operations: Vec<CompiledOp>`, `level_ranges: Vec<Range<usize>>`, `const_pool: Vec<u64>`, `slot_count: usize`, `slot_widths: Vec<u8>`, `input_bindings: Vec<SignalBinding>`, `output_bindings: Vec<SignalBinding>`, dan `source_map: SourceMap`.
+     - `CompiledRuntime` (B1): mengeksekusi operasi pada `values: Vec<u64>` dan `unknowns: Vec<u64>` terindeks langsung tanpa lookup map/hash selama siklus simulasi.
+  4. **Arsitektur Reference Evaluator (B0) & Differential Testing:**
+     - `ReferenceEvaluator` (B0) dibangun terpisah tanpa menggunakan `CompiledOp` atau `SignalSlot` datar. B0 berjalan langsung di atas `CircuitDefinition`, `Netlist`, dan `EvaluationSchedule` dengan `BTreeMap<NetId, LogicValue>` dan *dispatch* langsung per `definition_id` komponen.
+     - Harness diferensial mengeksekusi masukan deterministik (exhaustive untuk input sempit, PRNG ter-seed untuk input lebar) pada B0 dan B1 secara bersamaan dan memverifikasi kesamaan bit-exact `(val, unk)` pada seluruh `OutputBinding`.
+- **Konsekuensi & Dampak:**
+  - TBD-1 dan TBD-2 resmi ditutup dan siap diimplementasikan pada task `M3.02` hingga `M3.12`.
+  - Pemisahan implementasi B0 dan B1 menjamin validitas *differential test* tanpa bias logika bersama.

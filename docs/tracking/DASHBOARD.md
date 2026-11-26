@@ -46,8 +46,8 @@
 
 | ID | Topik TBD | Batas Penutupan | Status | Catatan / Keputusan Terpilih |
 | :--- | :--- | :---: | :---: | :--- |
-| **TBD-1** | Tabel kebenaran primitif & MUX (X/Z) | M3 | Open | Usulan: y = X jika select bernilai X/Z kecuali semua data sama |
-| **TBD-2** | Pengodean 4-nilai (Mask vs 2-bit pack) | M3 / M4 | Open | Eksperimen benchmarking pada M3 |
+| **TBD-1** | Tabel kebenaran primitif & MUX (X/Z) | M3 | **Closed** ✅ | Konservatif IEEE-style; MUX sel=X merge bit-by-bit (`[SPIKE-004]`) |
+| **TBD-2** | Pengodean 4-nilai (Mask vs 2-bit pack) | M3 / M4 | **Closed** ✅ | Dual-word (`values: Vec<u64>`, `unknowns: Vec<u64>`) (`[SPIKE-004]`) |
 | **TBD-3** | Algoritma konvergensi SCC & batas iterasi | M3 | Open | Trigger: ketersediaan workload W07 |
 | **TBD-4** | Kebijakan state awal sekuensial | M4 | Open | Mode ketat bernilai X, mode P0 bernilai 0 |
 | **TBD-5** | Prioritas reset vs enable register | M4 | Open | Ditetapkan per kontrak komponen sekuensial |
